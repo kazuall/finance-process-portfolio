@@ -1,10 +1,35 @@
+---
+config:
+  theme: base
+  htmlLabels: false
+  themeVariables:
+    darkMode: true
+    background: transparent
+    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif'
+    fontSize: '14px'
+    primaryTextColor: '#e6edf3'
+    lineColor: '#64748b'
+    textColor: '#e6edf3'
+    edgeLabelBackground: '#141a24'
+    clusterBkg: '#141a24'
+    clusterBorder: '#303d52'
+  flowchart:
+    htmlLabels: false
+    useMaxWidth: false
+    nodeSpacing: 20
+    rankSpacing: 24
+    padding: 9
+    diagramPadding: 10
+    curve: basis
+  themeCSS: 'text{font-family: Inter, "Segoe UI", Arial, sans-serif;}.node rect.label-container{rx:8px;ry:8px}.cluster rect{rx:8px;ry:8px}.edgeLabel .labelBkg{fill:#141a24 !important}.edgeLabel text{fill:#c5d2e4 !important}.cluster-label text{fill:#c5d2e4 !important;font-weight:600}'
+---
 flowchart TB
-  mail(["Saved mail"]):::feed --> extract["Local extraction<br/>with NuExtract"]:::data
-  extract --> verify{{"Calendar: time + ID<br/>Tracker: quote + role"}}:::check
-  verify -->|Verified change| write["Apply and<br/>verify"]:::confirmed
-  verify -->|Ambiguous| review["Human review"]:::review
-  classDef feed fill:#172b43,stroke:#6aa2db,stroke-width:1.5px,color:#ecf6ff
-  classDef data fill:#17293a,stroke:#537895,stroke-width:1.5px,color:#ebf5fd
-  classDef check fill:#2a2544,stroke:#b2a0f3,stroke-width:1.5px,color:#f5efff
-  classDef review fill:#3d2e22,stroke:#e7b979,stroke-width:1.5px,color:#fff1d9
-  classDef confirmed fill:#153632,stroke:#80cabe,stroke-width:1.5px,color:#e8fffa
+  mail(["Saved mail"]):::source --> extract["Local extraction<br/>with NuExtract"]:::process
+  extract --> verify["Check times and event ID<br/>Check quote and role"]:::check
+  verify -->|Verified change| write["Write and verify"]:::output
+  verify -->|Ambiguous| review["Human review"]:::human
+  classDef source fill:#162436,stroke:#5b8ec9,color:#e6edf3,stroke-width:1.25px
+  classDef process fill:#18202c,stroke:#3b4960,color:#e6edf3,stroke-width:1.25px
+  classDef check fill:#231d33,stroke:#9b87d4,color:#ede9fe,stroke-width:1.25px
+  classDef human fill:#2e2415,stroke:#d99b43,color:#fef3c7,stroke-width:1.25px,stroke-dasharray:4 3
+  classDef output fill:#132a24,stroke:#3fb98b,color:#d1fae5,stroke-width:1.25px
