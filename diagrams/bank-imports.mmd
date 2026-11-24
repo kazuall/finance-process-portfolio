@@ -1,7 +1,22 @@
-flowchart LR
-  bank["Bank CSV"] --> key["Check account and row IDs"]
-  key --> budget["Back up, then import"]
-  budget --> verify["Read back and replay"]
-  doc["Invoice file"] --> hash["Verify file fingerprint"]
-  hash --> classify["Classify document"]
-  classify --> review["Review exceptions"]
+flowchart TB
+  subgraph bank["Bank statement import"]
+    direction LR
+    file(["Bank CSV"]):::feed --> gate["Check account<br/>and snapshot file"]:::data
+    gate --> write["Back up and import<br/>with stable row IDs"]:::data
+    write --> receipt{"Receipt<br/>matches?"}:::check
+    receipt -->|Yes| done["Verify archive"]:::confirmed
+    receipt -->|Uncertain| pause["Pause and inspect"]:::review
+  end
+  subgraph admin["Document intake"]
+    direction LR
+    doc(["Invoice file"]):::feed --> hash["Verify SHA-256<br/>after collection"]:::data
+    hash --> evidence{{"Document type<br/>supported?"}}:::check
+    evidence -->|Yes| classify["Classify document"]:::confirmed
+    evidence -->|Unclear| review["Visual review"]:::review
+  end
+  bank ~~~ admin
+  classDef feed fill:#172b43,stroke:#6aa2db,stroke-width:1.5px,color:#ecf6ff
+  classDef data fill:#17293a,stroke:#537895,stroke-width:1.5px,color:#ebf5fd
+  classDef check fill:#2a2544,stroke:#b2a0f3,stroke-width:1.5px,color:#f5efff
+  classDef review fill:#3d2e22,stroke:#e7b979,stroke-width:1.5px,color:#fff1d9
+  classDef confirmed fill:#153632,stroke:#80cabe,stroke-width:1.5px,color:#e8fffa

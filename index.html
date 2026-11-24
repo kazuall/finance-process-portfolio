@@ -8,41 +8,56 @@
   <style>
     :root { color-scheme: light; font-family: "Segoe UI", system-ui, sans-serif; color: #202721; background: #fff; }
     * { box-sizing: border-box; }
-    body { margin: 0 auto; max-width: 65rem; padding: clamp(1rem, 4vw, 3rem); font-size: 1.125rem; line-height: 1.55; overflow-wrap: anywhere; }
+    body { margin: 0 auto; max-width: 78rem; padding: clamp(1rem, 2.8vw, 2.5rem); font-size: 1.0625rem; line-height: 1.52; overflow-wrap: anywhere; }
     h1, h2, h3, p, figure { margin: 0; }
-    h1, h2, h3 { line-height: 1.18; letter-spacing: -.025em; }
-    h1 { font-size: clamp(2.1rem, 4vw, 3.2rem); }
-    h2 { font-size: clamp(1.45rem, 3vw, 1.85rem); }
-    h3 { font-size: 1.125rem; margin-bottom: .3rem; }
+    h1, h2, h3 { line-height: 1.2; letter-spacing: -.022em; }
+    h1 { font-size: clamp(1.95rem, 3.8vw, 2.9rem); }
+    h2 { font-size: clamp(1.4rem, 2.7vw, 1.7rem); }
+    h3 { font-size: 1.0625rem; margin-bottom: .25rem; }
     a { color: #23583f; text-underline-offset: .18em; }
     a:hover { text-decoration-thickness: 2px; }
     a:focus-visible, [tabindex]:focus-visible { outline: 3px solid #306847; outline-offset: 2px; }
     .skip { position: absolute; left: .5rem; top: .5rem; padding: .4rem; background: white; transform: translateY(-180%); }
     .skip:focus { transform: none; }
-    header { border-bottom: 1px solid #cdd5ce; padding-bottom: 1.55rem; }
-    header > * + * { margin-top: .35rem; }
-    .name, .links, .case-nav, .source { font-size: 1rem; }
+    header { padding-bottom: 1rem; border-bottom: 1px solid #cdd5ce; }
+    header > * + * { margin-top: .3rem; }
+    .name, .links, .case-nav, .diagram-heading, figcaption { font-size: 1rem; }
     .name { font-weight: 650; color: #476052; }
-    .links, .case-nav { display: flex; flex-wrap: wrap; gap: .35rem 1.25rem; }
-    .links { margin-top: .7rem; }
-    .case-nav { padding: 1rem 0; border-bottom: 1px solid #dce0dc; }
-    article { padding: 1.65rem 0; border-bottom: 1px solid #cdd5ce; scroll-margin-top: .75rem; }
-    article > p { margin-top: .55rem; max-width: 79ch; }
-    figure { margin: 1.1rem 0; }
-    .frame { overflow: auto; border: 1px solid #d2dbd4; border-radius: .3rem; background: #fafcfb; padding: .7rem .25rem; }
-    .frame a { display: block; width: clamp(calc(var(--wide) * .82), 100%, var(--wide)); margin: 0 auto; cursor: zoom-in; }
+    .links, .case-nav { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; }
+    .links { margin-top: .55rem; }
+    .case-nav { padding: .7rem 0; border-bottom: 1px solid #dce0dc; }
+    article { padding: 1.3rem 0; border-bottom: 1px solid #cdd5ce; scroll-margin-top: .75rem; }
+    article > p { margin-top: .4rem; max-width: 88ch; }
+    .schematic { margin: .9rem 0; border: 1px solid #22324a; border-radius: .65rem; background: #111d2e; color: #f1f6ff; overflow: clip; }
+    .diagram-heading, figcaption { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; column-gap: 1rem; row-gap: .25rem; padding: .55rem .8rem; }
+    .diagram-heading { background: #18273a; border-bottom: 1px solid #354760; }
+    .schematic a { color: #bcdafd; }
+    .schematic a:focus-visible { outline-color: #d4ecff; }
+    .frame { overflow: auto; padding: .45rem .35rem; }
+    .frame a { display: block; width: clamp(calc(var(--wide) * .77), 100%, var(--wide)); margin-inline: auto; cursor: zoom-in; }
+    .frame a:focus-visible { outline-offset: -3px; }
     .frame img { display: block; width: 100%; height: auto; }
     .frame .compact { display: none; }
-    figcaption { margin-top: .3rem; color: #46564b; font-size: 1rem; }
-    .checks { display: grid; grid-template-columns: 1.15fr 1fr; gap: 1.5rem; }
-    .result { border-left: .18rem solid #69836e; padding-left: 1rem; }
-    .footnote { padding: 1.05rem 0; }
-    .footnote h2 { font-size: 1.15rem; margin-bottom: .3rem; }
+    figcaption { border-top: 1px solid #354760; color: #d6e3f3; }
+    .checks { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap: 1.2rem; }
+    .result { border-left: .16rem solid #69836e; padding-left: .85rem; }
+    .footnote { padding: .85rem 0; }
+    .footnote h2 { font-size: 1.125rem; margin-bottom: .25rem; }
     .footnote p { color: #435046; max-width: 82ch; }
+    @media (max-width: 74rem) {
+      #holdings .frame .wide { display: none; }
+      #holdings .frame .compact { display: block; width: clamp(calc(var(--small) * .79), 100%, var(--small)); }
+    }
+    @media (max-width: 67rem) {
+      #bank-imports .frame .wide { display: none; }
+      #bank-imports .frame .compact { display: block; width: clamp(calc(var(--small) * .79), 100%, var(--small)); }
+    }
+    @media (max-width: 57rem) {
+      #email .frame .wide { display: none; }
+      #email .frame .compact { display: block; width: clamp(calc(var(--small) * .79), 100%, var(--small)); }
+    }
     @media (max-width: 50rem) {
-      .frame .wide { display: none; }
-      .frame .compact { display: block; width: clamp(calc(var(--small) * .82), 100%, var(--small)); }
-      .checks { grid-template-columns: minmax(0,1fr); gap: .85rem; }
+      .checks { grid-template-columns: minmax(0,1fr); gap: .7rem; }
     }
   </style>
 </head>
@@ -59,12 +74,16 @@
   <article id="holdings">
     <h2>Holdings and freshness monitoring</h2>
     <p>My broker, exchanges and wallets update at different times. To value a position, I need to know when the account was read and how recent its price is.</p>
-    <figure>
-      <div class="frame" style="--wide:61.24rem; --small:24.32rem">
-        <a class="wide" href="diagrams/holdings-wide.svg" aria-label="Open full-size diagram for Holdings and freshness monitoring"><img src="diagrams/holdings-wide.svg" alt="Read-only feeds pass through a Python collector into SQLite. The Holdings API serves the dashboard and a separate, manually run freshness check."></a>
-        <a class="compact" href="diagrams/holdings-compact.svg" aria-label="Open full-size diagram for Holdings and freshness monitoring"><img src="diagrams/holdings-compact.svg" alt="Read-only feeds pass through a Python collector into SQLite. The Holdings API serves the dashboard and a separate, manually run freshness check."></a>
+    <figure class="schematic">
+      <div class="diagram-heading">
+        <strong>Valuation &amp; freshness</strong>
+        <a href="diagrams/holdings-wide.svg" aria-label="Open full diagram for Valuation &amp; freshness">Full diagram ↗</a>
       </div>
-      <figcaption>Open the diagram for a full-size view. <a class="source" href="diagrams/holdings.mmd" download>Mermaid source</a></figcaption>
+      <div class="frame" style="--wide:89.761rem; --small:23.638rem">
+        <a class="wide" href="diagrams/holdings-wide.svg" aria-label="Enlarge diagram for Valuation &amp; freshness"><img src="diagrams/holdings-wide.svg" alt="Read-only feeds enter a Python collector and SQLite. The Holdings API serves the dashboard and a manual freshness pilot, which records one incident and closes it after verified recovery."></a>
+        <a class="compact" href="diagrams/holdings-compact.svg" aria-label="Enlarge mobile diagram for Valuation &amp; freshness"><img src="diagrams/holdings-compact.svg" alt="Read-only feeds enter a Python collector and SQLite. The Holdings API serves the dashboard and a manual freshness pilot, which records one incident and closes it after verified recovery."></a>
+      </div>
+      <figcaption><span>The manual pilot checks balance and price timestamps independently.</span><a class="source" href="diagrams/holdings.mmd" download>Mermaid source ↓</a></figcaption>
     </figure>
     <div class="checks">
       <section><h3>Integrity checks</h3><p>Holdings stores each observation by source, account and instrument. A missing price leaves the valuation unavailable. Net account value and leveraged exposure have separate fields. The monitoring pilot tracks balance and price timestamps independently and requires a successful, fresh reading before closing an incident.</p></section>
@@ -74,12 +93,16 @@
   <article id="bank-imports">
     <h2>Bank imports and invoice review</h2>
     <p>Two bank exports can cover the same transactions. After an interrupted import, I need to determine which entries have already reached the budget. I built an importer for Actual Budget and a separate document intake routine for ADMIN DROP.</p>
-    <figure>
-      <div class="frame" style="--wide:58.22rem; --small:21.92rem">
-        <a class="wide" href="diagrams/bank-imports-wide.svg" aria-label="Open full-size diagram for Bank imports and invoice review"><img src="diagrams/bank-imports-wide.svg" alt="The bank workflow checks the account and transaction IDs, backs up the budget, imports entries and verifies the outcome. The separate invoice workflow verifies the file fingerprint, classifies documents and routes exceptions to review."></a>
-        <a class="compact" href="diagrams/bank-imports-compact.svg" aria-label="Open full-size diagram for Bank imports and invoice review"><img src="diagrams/bank-imports-compact.svg" alt="The bank workflow checks the account and transaction IDs, backs up the budget, imports entries and verifies the outcome. The separate invoice workflow verifies the file fingerprint, classifies documents and routes exceptions to review."></a>
+    <figure class="schematic">
+      <div class="diagram-heading">
+        <strong>Import &amp; document controls</strong>
+        <a href="diagrams/bank-imports-wide.svg" aria-label="Open full diagram for Import &amp; document controls">Full diagram ↗</a>
       </div>
-      <figcaption>Open the diagram for a full-size view. <a class="source" href="diagrams/bank-imports.mmd" download>Mermaid source</a></figcaption>
+      <div class="frame" style="--wide:78.994rem; --small:25.179rem">
+        <a class="wide" href="diagrams/bank-imports-wide.svg" aria-label="Enlarge diagram for Import &amp; document controls"><img src="diagrams/bank-imports-wide.svg" alt="The bank import checks the account, makes a snapshot, backs up and imports using stable row IDs. A matching receipt leads to archive verification. An uncertain result pauses the watcher. A separate document intake checks SHA-256 and routes unclear classifications to visual review."></a>
+        <a class="compact" href="diagrams/bank-imports-compact.svg" aria-label="Enlarge mobile diagram for Import &amp; document controls"><img src="diagrams/bank-imports-compact.svg" alt="The bank import checks the account, makes a snapshot, backs up and imports using stable row IDs. A matching receipt leads to archive verification. An uncertain result pauses the watcher. A separate document intake checks SHA-256 and routes unclear classifications to visual review."></a>
+      </div>
+      <figcaption><span>An uncertain import pauses. Ambiguous documents go to visual review.</span><a class="source" href="diagrams/bank-imports.mmd" download>Mermaid source ↓</a></figcaption>
     </figure>
     <div class="checks">
       <section><h3>Integrity checks</h3><p>The importer locks the file snapshot, backs up the budget and uses stable transaction IDs across overlapping periods. An uncertain write pauses the watcher until its receipt can be checked. In ADMIN DROP, a fingerprint verifies the original document. Visual review caught an incorrect proposed amount on a cancelled invoice.</p></section>
@@ -89,12 +112,16 @@
   <article id="email">
     <h2>Calendar changes and application replies</h2>
     <p>A rescheduled invitation can create a second appointment. A reply from an employer can concern just one of two open applications. I use local AI extraction to propose changes and source checks to decide which record can be updated.</p>
-    <figure>
-      <div class="frame" style="--wide:55.55rem; --small:25.96rem">
-        <a class="wide" href="diagrams/email-wide.svg" aria-label="Open full-size diagram for Calendar changes and application replies"><img src="diagrams/email-wide.svg" alt="Saved mail feeds two workflows. Calendar changes require a time and event identity check. Application decisions require a matching role and supporting quote. Uncertain cases go to review."></a>
-        <a class="compact" href="diagrams/email-compact.svg" aria-label="Open full-size diagram for Calendar changes and application replies"><img src="diagrams/email-compact.svg" alt="Saved mail feeds two workflows. Calendar changes require a time and event identity check. Application decisions require a matching role and supporting quote. Uncertain cases go to review."></a>
+    <figure class="schematic">
+      <div class="diagram-heading">
+        <strong>Extraction, checks &amp; review</strong>
+        <a href="diagrams/email-wide.svg" aria-label="Open full diagram for Extraction, checks &amp; review">Full diagram ↗</a>
       </div>
-      <figcaption>Open the diagram for a full-size view. <a class="source" href="diagrams/email.mmd" download>Mermaid source</a></figcaption>
+      <div class="frame" style="--wide:65.628rem; --small:22.149rem">
+        <a class="wide" href="diagrams/email-wide.svg" aria-label="Enlarge diagram for Extraction, checks &amp; review"><img src="diagrams/email-wide.svg" alt="Local extraction feeds calendar and application checks. Verified calendar changes are written and read back by ID. An already current event skips the write. Verified application decisions enter the SQLite journal. Ambiguous evidence goes to human review."></a>
+        <a class="compact" href="diagrams/email-compact.svg" aria-label="Enlarge mobile diagram for Extraction, checks &amp; review"><img src="diagrams/email-compact.svg" alt="Local extraction feeds calendar and application checks. Verified calendar changes are written and read back by ID. An already current event skips the write. Verified application decisions enter the SQLite journal. Ambiguous evidence goes to human review."></a>
+      </div>
+      <figcaption><span>Calendar updates and application decisions each have their own evidence checks.</span><a class="source" href="diagrams/email.mmd" download>Mermaid source ↓</a></figcaption>
     </figure>
     <div class="checks">
       <section><h3>Integrity checks</h3><p>The calendar workflow checks dates, time zone and, for invitation updates, event ID and version. It reads each write back by event ID. The tracker checks that the quote appears in the current message and matches the employer and role. Conflicting evidence goes to human review.</p></section>

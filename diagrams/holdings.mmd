@@ -1,7 +1,13 @@
 flowchart LR
-  feeds["Read-only<br/>feeds"] --> pull["Python<br/>collector"]
-  pull --> db[("SQLite<br/>snapshots")]
-  db --> api["Holdings<br/>API"]
-  api --> ui["Dashboard"]
-  api -.-> pilot["Manual freshness<br/>check"]
-  pilot --> log["Incident or<br/>recovery"]
+  feeds(["Broker, exchanges<br/>and wallets"]):::feed --> collect["Python<br/>collector"]:::data
+  collect --> store[("SQLite<br/>snapshots")]:::data
+  store --> api["Holdings API<br/>state + health"]:::data
+  api --> dashboard["Dashboard<br/>values + timestamps"]:::confirmed
+  api -. Manual pilot .-> fresh{"Balance and<br/>price fresh?"}:::check
+  fresh -->|Stale or missing| incident["Open or update<br/>one incident"]:::review
+  fresh -->|Verified recovery| close["Close incident"]:::confirmed
+  classDef feed fill:#172b43,stroke:#6aa2db,stroke-width:1.5px,color:#ecf6ff
+  classDef data fill:#17293a,stroke:#537895,stroke-width:1.5px,color:#ebf5fd
+  classDef check fill:#2a2544,stroke:#b2a0f3,stroke-width:1.5px,color:#f5efff
+  classDef review fill:#3d2e22,stroke:#e7b979,stroke-width:1.5px,color:#fff1d9
+  classDef confirmed fill:#153632,stroke:#80cabe,stroke-width:1.5px,color:#e8fffa
