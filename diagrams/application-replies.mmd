@@ -1,0 +1,35 @@
+---
+config:
+  theme: base
+  htmlLabels: false
+  themeVariables:
+    darkMode: true
+    background: '#101010'
+    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif'
+    fontSize: '16px'
+    primaryColor: '#242424'
+    primaryTextColor: '#e2e2e2'
+    primaryBorderColor: '#434343'
+    lineColor: '#a3a3a3'
+    edgeLabelBackground: '#101010'
+    textColor: '#cdcdcd'
+  flowchart:
+    htmlLabels: false
+    useMaxWidth: false
+    nodeSpacing: 26
+    rankSpacing: 34
+    wrappingWidth: 270
+    padding: 10
+    diagramPadding: 5
+    curve: basis
+  themeCSS: 'text,tspan{font-family:system-ui,sans-serif!important}.node rect.label-container{rx:3px;ry:3px}.node rect,.node polygon,.flowchart-link{stroke-width:1px!important}.edgeLabel .labelBkg{fill:#101010!important;opacity:1!important}.edgeLabel text{fill:#c4c4c4!important}'
+---
+flowchart TB
+  accTitle: Application replies
+  accDescr: A local model extracts a reply type and quote. The tracker checks the quote against the message and identifies the specific role. Clear decisions are journalled in SQLite. Conflicting evidence goes to review.
+  pages["Read collected email pages"] --> registry["Match employer and open roles"]
+  registry --> quote["Extract reply type and quote locally"]
+  quote --> proof{"Quote and role<br/>verified?"}
+  proof -->|Unclear| review["Queue for human review"]
+  proof -->|Verified| write["Record decision in SQLite"]
+  write --> views["Refresh application tracker"]
