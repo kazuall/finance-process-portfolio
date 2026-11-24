@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Victor Tricard’s personal finance and process operations portfolio. Three case studies on data integrity, exception handling and verified outcomes.">
+  <title>Victor Tricard | Finance &amp; Process Operations</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --background: #0d1117;
+      --surface: #141a24;
+      --border: #242f40;
+      --text: #e6edf3;
+      --muted: #94a3b8;
+      --link: #7aa2f7;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background: var(--background);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0 auto; max-width: 78rem; padding: clamp(1rem, 2.8vw, 2.5rem); font-size: 1.0625rem; line-height: 1.52; overflow-wrap: anywhere; }
+    h1, h2, h3, p, figure { margin: 0; }
+    h1, h2, h3 { line-height: 1.2; letter-spacing: -.022em; }
+    h1 { font-size: clamp(1.95rem, 3.8vw, 2.9rem); }
+    h2 { font-size: clamp(1.4rem, 2.7vw, 1.7rem); }
+    h3 { font-size: 1.0625rem; margin-bottom: .25rem; }
+    a { color: var(--link); text-underline-offset: .18em; }
+    a:hover { color: #9dbaf9; }
+    a:focus-visible, [tabindex]:focus-visible { outline: 3px solid #aac7ff; outline-offset: 2px; }
+    .skip { position: absolute; inset: .5rem auto auto .5rem; padding: .4rem; background: var(--background); transform: translateY(-180%); }
+    .skip:focus { transform: none; }
+    header { padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+    header > * + * { margin-top: .3rem; }
+    header > p { max-width: 92ch; }
+    .name, .links, .case-nav, .stack, .diagram-heading, figcaption { font-size: 1rem; }
+    .name { font-weight: 650; color: var(--muted); }
+    .links, .case-nav { display: flex; flex-wrap: wrap; align-items: center; gap: .4rem 1.25rem; }
+    .links { margin-top: .65rem; }
+    .links .cv { border: 1px solid #303d52; background: #1a2230; border-radius: .4rem; padding: .2rem .55rem; }
+    .case-nav { padding: .7rem 0; border-bottom: 1px solid var(--border); }
+    article { padding: 1.3rem 0; border-bottom: 1px solid var(--border); scroll-margin-top: .75rem; }
+    article > p { margin-top: .4rem; max-width: 88ch; }
+    .stack {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .1rem .55rem;
+      max-width: none;
+      margin-block: .35rem .6rem;
+      color: var(--muted);
+      font-family: "JetBrains Mono", ui-monospace, Consolas, monospace;
+    }
+    .stack span + span::before { content: "·"; margin-right: .55rem; color: var(--muted); }
+    .schematic { margin: .9rem 0; border: 1px solid var(--border); border-radius: .75rem; background: var(--surface); overflow: clip; }
+    .diagram-heading, figcaption { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: .25rem 1rem; padding: .55rem .8rem; }
+    .diagram-heading { border-bottom: 1px solid var(--border); }
+    figcaption { border-top: 1px solid var(--border); color: var(--muted); }
+    .frame { overflow: auto; padding: .4rem .35rem; }
+    .frame a { display: block; width: clamp(calc(var(--wide) * 1.145), 100%, calc(var(--wide) * 1.23)); margin-inline: auto; cursor: zoom-in; }
+    .frame a:focus-visible { outline-offset: -3px; }
+    .frame img { display: block; width: 100%; height: auto; }
+    .frame .compact { display: none; }
+    .checks { display: grid; grid-template-columns: minmax(0,1.2fr) minmax(0,1fr); gap: 1.2rem; }
+    .result { border-left: .15rem solid #3b4960; padding-left: .85rem; }
+    .result p + p { margin-top: .5rem; }
+    .footnote { padding: .95rem 0; }
+    .footnote h2 { font-size: 1.125rem; margin-bottom: .25rem; }
+    .footnote p { color: var(--muted); max-width: 82ch; }
+    @media (max-width: 75rem) {
+      #holdings .frame .wide, #bank-imports .frame .wide { display: none; }
+      #holdings .frame .compact, #bank-imports .frame .compact { display: block; width: clamp(calc(var(--small) * 1.145), 100%, calc(var(--small) * 1.2)); }
+    }
+    @media (max-width: 68rem) {
+      #email .frame .wide { display: none; }
+      #email .frame .compact { display: block; width: clamp(calc(var(--small) * 1.145), 100%, calc(var(--small) * 1.2)); }
+    }
+    @media (max-width: 50rem) {
+      .checks { grid-template-columns: minmax(0,1fr); gap: .7rem; }
+    }
+    @media print {
+      :root { color-scheme: light; --background: #fff; --surface: #fff; --text: #000; --muted: #333; --border: #aaa; --link: #000; }
+      body { padding: 0; }
+      .skip, .case-nav, .diagram-heading a, figcaption a { display: none; }
+      .links .cv { background: none; }
+      .schematic { break-inside: avoid; }
+      .frame { overflow: visible; }
+      .frame .wide { display: block !important; width: 100%; }
+      .frame .compact { display: none !important; }
+      .frame img { filter: invert(1) grayscale(1); }
+    }
+  </style>
+</head>
+<body>
+<a class="skip" href="#studies">Skip to case studies</a>
+<header>
+  <p class="name">Victor Tricard · Berlin · EN / FR / DE</p>
+  <h1>Finance &amp; Process Operations</h1>
+  <p>I design and run automated finance and operations workflows with Python, SQLite, n8n and AI-assisted coding. I use deterministic checks before writes and route ambiguous cases to human review.</p>
+  <nav class="links" aria-label="Profile"><a class="cv" href="Victor-Tricard-CV.pdf">CV (PDF)</a><a href="https://www.linkedin.com/in/victor-tricard-893660300/">LinkedIn</a><a href="mailto:victortricard@gmail.com">Email</a></nav>
+</header>
+<main id="studies" tabindex="-1">
+  <nav class="case-nav" aria-label="Case studies"><a href="#holdings">Holdings</a><a href="#bank-imports">Bank imports &amp; invoices</a><a href="#email">Email workflows</a></nav>
+  <article id="holdings">
+    <h2>Holdings and freshness monitoring</h2>
+    <p class="stack"><span>Python</span><span>SQLite</span><span>React</span><span>Linux VPS (systemd)</span><span>Read-only sources (IBKR, OKX, Kraken, Solana, Lighter)</span></p>
+    <p>My broker, exchanges and wallets update at different times. To value a position, I need to know when the account was read and how recent its price is.</p>
+    <figure class="schematic">
+      <div class="diagram-heading">
+        <strong>Valuation &amp; freshness</strong>
+        <a href="diagrams/holdings-wide.svg" aria-label="Open full diagram for Valuation &amp; freshness">Full diagram ↗</a>
+      </div>
+      <div class="frame" style="--wide:60.6194rem; --small:18.0986rem">
+        <a class="wide" href="diagrams/holdings-wide.svg" aria-label="Enlarge diagram for Valuation &amp; freshness"><img src="diagrams/holdings-wide.svg" alt="Read-only feeds enter a Python collector and SQLite. The Holdings API serves the dashboard and a manual freshness pilot, which records one incident and closes it after verified recovery."></a>
+        <a class="compact" href="diagrams/holdings-compact.svg" aria-label="Enlarge mobile diagram for Valuation &amp; freshness"><img src="diagrams/holdings-compact.svg" alt="Read-only feeds enter a Python collector and SQLite. The Holdings API serves the dashboard and a manual freshness pilot, which records one incident and closes it after verified recovery."></a>
+      </div>
+      <figcaption><span>The manual pilot checks balance and price timestamps independently.</span><a class="source" href="diagrams/holdings.mmd" download>Mermaid source ↓</a></figcaption>
+    </figure>
+    <div class="checks">
+      <section><h3>Integrity checks</h3><p>Holdings stores each observation by source, account and instrument. A missing price leaves the valuation unavailable. Net account value and leveraged exposure have separate fields. The monitoring pilot tracks balance and price timestamps independently and requires a successful, fresh reading before closing an incident.</p></section>
+      <section class="result"><h3>Verified result</h3><p>Holdings runs as a systemd service on a Linux VPS and collects read-only data from five live platforms. Backups are encrypted, and I verified an isolated restore.</p><p>In a separate synthetic pilot test, the balance was 601 seconds old and its price was 10 seconds old. Only the balance exceeded its threshold (180 seconds for balances, 300 for prices). Repeated checks produced one incident report for that episode.</p></section>
+    </div>
+  </article>
+  <article id="bank-imports">
+    <h2>Bank imports and invoice review</h2>
+    <p class="stack"><span>Python</span><span>PowerShell</span><span>SHA-256</span><span>Idempotent CSV import</span><span>Actual Budget</span></p>
+    <p>Two bank exports can cover the same transactions. After an interrupted import, I need to determine which entries have already reached the budget. I built an importer for Actual Budget and a separate document intake routine for ADMIN DROP.</p>
+    <figure class="schematic">
+      <div class="diagram-heading">
+        <strong>Import &amp; document controls</strong>
+        <a href="diagrams/bank-imports-wide.svg" aria-label="Open full diagram for Import &amp; document controls">Full diagram ↗</a>
+      </div>
+      <div class="frame" style="--wide:60.6800rem; --small:17.5440rem">
+        <a class="wide" href="diagrams/bank-imports-wide.svg" aria-label="Enlarge diagram for Import &amp; document controls"><img src="diagrams/bank-imports-wide.svg" alt="The bank import checks the account, makes a snapshot, backs up and imports using stable row IDs. A matching receipt leads to archive verification. An uncertain result pauses the watcher. A separate document intake checks SHA-256 and routes unclear classifications to visual review."></a>
+        <a class="compact" href="diagrams/bank-imports-compact.svg" aria-label="Enlarge mobile diagram for Import &amp; document controls"><img src="diagrams/bank-imports-compact.svg" alt="The bank import checks the account, makes a snapshot, backs up and imports using stable row IDs. A matching receipt leads to archive verification. An uncertain result pauses the watcher. A separate document intake checks SHA-256 and routes unclear classifications to visual review."></a>
+      </div>
+      <figcaption><span>An uncertain import pauses. Ambiguous documents go to visual review.</span><a class="source" href="diagrams/bank-imports.mmd" download>Mermaid source ↓</a></figcaption>
+    </figure>
+    <div class="checks">
+      <section><h3>Integrity checks</h3><p>The importer locks the file snapshot, backs up the budget and uses stable transaction IDs across overlapping periods. An uncertain write pauses the watcher until its receipt can be checked. In ADMIN DROP, a fingerprint verifies the original document. Visual review caught an incorrect proposed amount on a cancelled invoice.</p></section>
+      <section class="result"><h3>Verified result</h3><p>One recovery added 6 transactions and skipped 280 duplicates. Replaying the same file added 0. An independent read confirmed that entries already in the budget were preserved.</p></section>
+    </div>
+  </article>
+  <article id="email">
+    <h2>Calendar changes and application replies</h2>
+    <p class="stack"><span>n8n</span><span>Python</span><span>SQLite</span><span>Local LLM (NuExtract)</span><span>PII masking</span><span>Google Calendar API</span></p>
+    <p>A rescheduled invitation can create a second appointment. A reply from an employer can concern just one of two open applications. I use local AI extraction to propose changes and source checks to decide which record can be updated.</p>
+    <figure class="schematic">
+      <div class="diagram-heading">
+        <strong>Extraction, checks &amp; review</strong>
+        <a href="diagrams/email-wide.svg" aria-label="Open full diagram for Extraction, checks &amp; review">Full diagram ↗</a>
+      </div>
+      <div class="frame" style="--wide:54.6945rem; --small:18.8402rem">
+        <a class="wide" href="diagrams/email-wide.svg" aria-label="Enlarge diagram for Extraction, checks &amp; review"><img src="diagrams/email-wide.svg" alt="Local extraction feeds calendar and application checks. Verified calendar changes are written and read back by ID. An already current event skips the write. Verified application decisions enter the SQLite journal. Ambiguous evidence goes to human review."></a>
+        <a class="compact" href="diagrams/email-compact.svg" aria-label="Enlarge mobile diagram for Extraction, checks &amp; review"><img src="diagrams/email-compact.svg" alt="Local extraction feeds calendar and application checks. Verified calendar changes are written and read back by ID. An already current event skips the write. Verified application decisions enter the SQLite journal. Ambiguous evidence goes to human review."></a>
+      </div>
+      <figcaption><span>Calendar updates and application decisions each have their own evidence checks.</span><a class="source" href="diagrams/email.mmd" download>Mermaid source ↓</a></figcaption>
+    </figure>
+    <div class="checks">
+      <section><h3>Integrity checks</h3><p>The calendar workflow checks dates, time zone and, for invitation updates, event ID and version. It reads each write back by event ID. Eligible calendar excerpts are masked before external classification, and attachments stay local. The tracker checks that the quote appears in the current message and matches the employer and role. Conflicting evidence goes to human review.</p></section>
+      <section class="result"><h3>Verified result</h3><p>A rescheduled interview produced 1 event at the revised time, with 0 actions left on replay. The calendar fix passed 83 tests. In a separate tracker case, a rejection changed only the relevant one of two applications at the same employer.</p></section>
+    </div>
+  </article>
+</main>
+<footer class="footnote"><h2>Privacy &amp; Verification</h2><p>These personal systems process my own financial records and correspondence. The diagrams and examples are anonymised. Import and calendar outcomes refer to specific documented runs. The freshness example uses synthetic timestamps from the manual pilot.</p></footer>
+</body>
+</html>

@@ -1,0 +1,14 @@
+flowchart LR
+  mail(["Saved mail<br/>and invitations"]):::feed --> extract["Local extraction<br/>NuExtract"]:::data
+  extract --> cal{{"Calendar check<br/>time, zone, UID/version"}}:::check
+  extract --> app{{"Application check<br/>exact quote and role"}}:::check
+  cal -->|Verified change| write["Write and<br/>read back by ID"]:::confirmed
+  cal -->|Already current| noop["Skip calendar write"]:::data
+  app -->|Verified decision| journal[("SQLite journal<br/>and tracker views")]:::confirmed
+  cal -. Ambiguous .-> human["Human review"]:::review
+  app -. Ambiguous .-> human
+  classDef feed fill:#172b43,stroke:#6aa2db,stroke-width:1.5px,color:#ecf6ff
+  classDef data fill:#17293a,stroke:#537895,stroke-width:1.5px,color:#ebf5fd
+  classDef check fill:#2a2544,stroke:#b2a0f3,stroke-width:1.5px,color:#f5efff
+  classDef review fill:#3d2e22,stroke:#e7b979,stroke-width:1.5px,color:#fff1d9
+  classDef confirmed fill:#153632,stroke:#80cabe,stroke-width:1.5px,color:#e8fffa

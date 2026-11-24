@@ -1,0 +1,7 @@
+flowchart LR
+  mail["Saved mail"] --> cal["Calendar extraction"]
+  mail --> app["Reply extraction"]
+  cal --> event["Check time and event ID"]
+  event --> calendar["Apply or review"]
+  app --> proof["Check quote and role"]
+  proof --> tracker["Record or review"]

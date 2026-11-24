@@ -1,0 +1,35 @@
+---
+config:
+  theme: base
+  htmlLabels: false
+  themeVariables:
+    darkMode: true
+    background: '#101010'
+    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif'
+    fontSize: '16px'
+    primaryColor: '#242424'
+    primaryTextColor: '#e2e2e2'
+    primaryBorderColor: '#434343'
+    lineColor: '#a3a3a3'
+    edgeLabelBackground: '#101010'
+    textColor: '#cdcdcd'
+  flowchart:
+    htmlLabels: false
+    useMaxWidth: false
+    nodeSpacing: 26
+    rankSpacing: 34
+    wrappingWidth: 270
+    padding: 10
+    diagramPadding: 5
+    curve: basis
+  themeCSS: 'text,tspan{font-family:system-ui,sans-serif!important}.node rect.label-container{rx:3px;ry:3px}.node rect,.node polygon,.flowchart-link{stroke-width:1px!important}.edgeLabel .labelBkg{fill:#101010!important;opacity:1!important}.edgeLabel text{fill:#c4c4c4!important}'
+---
+flowchart TB
+  accTitle: Holdings freshness pilot
+  accDescr: A manual check reads Holdings status and source timestamps. A new incident produces one local report. Repeat observations are deduplicated. A healthy reading closes an open incident or leaves the log untouched.
+  api["Read Holdings status and health"] --> times["Compare balance age, price age<br/>and source availability"]
+  times --> state{"Source state?"}
+  state -->|Healthy| ok["No open incident<br/>No report"]
+  state -->|New incident| log["Write one report<br/>for this episode"]
+  state -->|Same incident| same["Keep existing<br/>incident"]
+  state -->|Recovered| close["Record verified<br/>recovery"]

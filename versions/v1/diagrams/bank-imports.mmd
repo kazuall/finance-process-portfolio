@@ -1,0 +1,7 @@
+flowchart LR
+  bank["Bank CSV"] --> key["Check account and row IDs"]
+  key --> budget["Back up, then import"]
+  budget --> verify["Read back and replay"]
+  doc["Invoice file"] --> hash["Verify file fingerprint"]
+  hash --> classify["Classify document"]
+  classify --> review["Review exceptions"]

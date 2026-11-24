@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Comparer les versions du portfolio · Victor Tricard</title>
+  <style>
+    :root { color-scheme: dark; font: 100%/1.5 Inter, system-ui, sans-serif; background: #101010; color: #e6e6e6; }
+    * { box-sizing: border-box; }
+    body { margin: 0 auto; padding: clamp(1rem,2vw,2rem); max-width: 120rem; }
+    h1 { margin: 0 0 .7rem; font-size: clamp(1.5rem,3vw,2rem); font-weight: 600; letter-spacing: -.03em; }
+    nav { display: flex; flex-wrap: wrap; gap: .3rem 1.25rem; }
+    a { color: #d1cade; text-underline-offset: .2em; }
+    :focus-visible { outline: 2px solid #d1cade; outline-offset: 3px; }
+    .pair { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; margin-top: 1.25rem; }
+    .toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: .4rem .65rem; padding-block: .65rem; border-top: 1px solid #414141; }
+    .toolbar label { font-weight: 600; }
+    select { font: inherit; background: #1b1b1b; color: inherit; border: 1px solid #565656; padding: .35rem; border-radius: .25rem; max-width: 100%; }
+    .toolbar a { margin-inline-start: auto; }
+    iframe { display: block; width: 100%; height: 72vh; height: 72dvh; border: 1px solid #383838; }
+    fieldset { display: none; }
+    [hidden] { display: none !important; }
+    @media (max-width: 52rem) {
+      .pair { display: block; margin-top: .5rem; }
+      fieldset { display: flex; flex-wrap: wrap; gap: .25rem 1rem; padding: .4rem 0; margin: 1rem 0 0; border: 0; }
+      legend { color: #bdbdbd; }
+      fieldset label { cursor: pointer; }
+      main:has(#show-a:checked) #pane-b, main:has(#show-b:checked) #pane-a { display: none; }
+      iframe { height: 65vh; height: 65dvh; }
+    }
+  </style>
+</head>
+<body>
+  <h1>Comparer les versions du portfolio</h1>
+  <nav aria-label="Ouvrir une version complète">
+    <a href="v1/index.html">V1 · Première publication</a>
+    <a href="v2/index.html">V2 · Schémas détaillés</a>
+    <a href="v3/index.html">V3 · Thème sombre en couleurs</a>
+    <a href="v4/index.html">V4 · Style Obsidian</a>
+  </nav>
+  <main hidden>
+    <fieldset>
+      <legend>Aperçu affiché</legend>
+      <label><input id="show-a" type="radio" name="pane" checked> Vue A</label>
+      <label><input id="show-b" type="radio" name="pane"> Vue B</label>
+    </fieldset>
+    <div class="pair"></div>
+  </main>
+  <template id="pane">
+    <section>
+      <div class="toolbar"><label></label><select></select><a>Ouvrir en grand</a></div>
+      <iframe></iframe>
+    </section>
+  </template>
+  <script>
+    const releases = [...document.querySelectorAll('nav a')];
+    function addPane(name, initial) {
+      const pane = document.querySelector('#pane').content.firstElementChild.cloneNode(true);
+      pane.id = 'pane-' + name.toLowerCase();
+      const label = pane.querySelector('label');
+      const select = pane.querySelector('select');
+      const open = pane.querySelector('a');
+      const frame = pane.querySelector('iframe');
+      select.id = 'select-' + name.toLowerCase();
+      label.htmlFor = select.id;
+      label.textContent = 'Vue ' + name;
+      for (const release of releases) {
+        select.add(new Option(release.textContent, release.getAttribute('href')));
+      }
+      select.selectedIndex = initial;
+      function update() {
+        const title = select.selectedOptions[0].textContent;
+        open.href = select.value + '#holdings';
+        open.setAttribute('aria-label', 'Ouvrir en grand · ' + title);
+        frame.title = 'Vue ' + name + ' · ' + title;
+        frame.src = open.href;
+      }
+      select.addEventListener('change', update);
+      update();
+      document.querySelector('.pair').append(pane);
+    }
+    addPane('A', releases.length - 2);
+    addPane('B', releases.length - 1);
+    document.querySelector('main').hidden = false;
+  </script>
+</body>
+</html>
