@@ -1,0 +1,7 @@
+flowchart LR
+  feeds["Read-only<br/>feeds"] --> pull["Python<br/>collector"]
+  pull --> db[("SQLite<br/>snapshots")]
+  db --> api["Holdings<br/>API"]
+  api --> ui["Dashboard"]
+  api -.-> pilot["Manual freshness<br/>check"]
+  pilot --> log["Incident or<br/>recovery"]
