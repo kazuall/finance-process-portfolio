@@ -1,0 +1,36 @@
+---
+config:
+  theme: base
+  htmlLabels: false
+  themeVariables:
+    darkMode: true
+    background: '#0a0a0a'
+    fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif'
+    fontSize: '13px'
+    primaryColor: '#1b1b1b'
+    primaryTextColor: '#d8d8d8'
+    primaryBorderColor: '#3c3c3c'
+    lineColor: '#929292'
+    edgeLabelBackground: '#0a0a0a'
+    textColor: '#d8d8d8'
+  flowchart:
+    htmlLabels: false
+    useMaxWidth: false
+    nodeSpacing: 26
+    rankSpacing: 30
+    wrappingWidth: 240
+    padding: 8
+    diagramPadding: 5
+    curve: basis
+  themeCSS: 'text,tspan{font-family:system-ui,sans-serif!important;font-weight:400!important}.node rect.label-container{rx:3px;ry:3px}.node rect,.node polygon,.flowchart-link{stroke-width:.85px!important}.edgeLabel .labelBkg{fill:#0a0a0a!important;opacity:1!important}.edgeLabel text{fill:#bebebe!important}'
+---
+flowchart TB
+  accTitle: Invoice intake
+  accDescr: Downloads and manually supplied scans reach document intake. The original is fingerprinted. Documents with a clear type and destination are filed with a trace. Unclear documents stay in the review queue.
+  downloads["Recognised invoice download"] --> verify["Check stability and duplicates"]
+  verify -->|Confirmed| drop["Administrative inbox"]
+  manual["Manually submitted scan"] --> drop
+  drop --> read["Read document and verify SHA-256"]
+  read --> route{"Destination<br/>supported?"}
+  route -.->|Unclear| review["Hold for visual review"]
+  route -->|Clear| file["File and log source<br/>and destination"]

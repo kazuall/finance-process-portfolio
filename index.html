@@ -48,6 +48,14 @@
     .checks section + section { margin-top: 1.3rem; }
     .checks p { margin-top: .45rem; }
     .checks h3 { margin: 0; }
+
+    .interface-preview { margin-top: 1.65rem; }
+    .interface-preview > p { color: var(--quiet); margin-top: .4rem; }
+    .interface-shots { display: grid; gap: 1.75rem; margin-top: .9rem; }
+    .interface-shots figure { min-width: 0; }
+    .interface-shots a { display: block; margin-top: .5rem; cursor: zoom-in; }
+    .interface-shots figcaption p { margin-top: .2rem; }
+    .interface-shots img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: .35rem; }
     .footnote { padding: 1.05rem 0; }
     .footnote h2 { font-size: 1.1875rem; }
     .footnote p { margin-top: .4rem; max-width: 82ch; color: var(--secondary); }
@@ -97,7 +105,7 @@
   <nav class="links" aria-label="Profile"><a href="https://www.linkedin.com/in/victor-tricard-893660300/">LinkedIn</a><a href="mailto:victortricard@gmail.com">Email</a></nav>
 </header>
 <main id="studies" tabindex="-1">
-  <nav class="case-nav" aria-label="Case studies"><a href="#holdings">Holdings</a><a href="#bank-imports">Bank imports &amp; invoices</a><a href="#email">Email workflows</a></nav>
+  <nav class="case-nav" aria-label="Case studies"><a href="#holdings">Holdings</a><a href="#bank-imports">Bank sync &amp; invoices</a><a href="#email">Email workflows</a></nav>
   <article id="holdings">
     <h2>Holdings and freshness monitoring</h2>
     <p class="stack"><span>Python</span><span>SQLite</span><span>React</span><span>Linux VPS (systemd)</span><span>Read-only sources (IBKR, OKX, Kraken, Solana, Lighter)</span></p>
@@ -122,22 +130,48 @@
       <section class="result"><h3>Verified result</h3><p>Holdings runs as a systemd service on a Linux VPS and collects read-only data from five live platforms. Backups are encrypted, and I verified an isolated restore.</p><p>In a separate synthetic pilot test, the balance was 601 seconds old and its price was 10 seconds old. Only the balance exceeded its threshold (180 seconds for balances, 300 for prices). Repeated checks produced one incident report for that episode.</p></section>
     </div>
     </div>
+    <section class="interface-preview" aria-labelledby="holdings-preview-title">
+      <h3 id="holdings-preview-title">Interface preview</h3>
+      <p>The Holdings dashboard uses fictional balances, positions and prices in this preview.</p>
+      <div class="interface-shots">
+        <figure>
+          <figcaption>
+            <strong>Portfolio overview</strong>
+            <p>Four sample accounts with gaps where readings are missing. Holdings automatically matches new Lighter positions to their market logos.</p>
+          </figcaption>
+          <a href="images/holdings-overview.png" data-view="screenshot" aria-label="Enlarge Portfolio overview">
+            <img src="images/holdings-overview.png" width="1440" height="1310" loading="lazy" decoding="async"
+               alt="Holdings dashboard with a portfolio value chart, an account summary and an assets table.">
+          </a>
+        </figure>
+        <figure>
+          <figcaption>
+            <strong>NVDA position detail</strong>
+            <p>Net account value and leveraged exposure shown separately, with the price source, 30-second chart refresh, and entry, mark and estimated liquidation levels.</p>
+          </figcaption>
+          <a href="images/holdings-position.png" data-view="screenshot" aria-label="Enlarge NVDA position detail">
+            <img src="images/holdings-position.png" width="1440" height="2020" loading="lazy" decoding="async"
+               alt="NVDA drawer over the dimmed dashboard, with a funding panel, a candlestick chart and a position summary.">
+          </a>
+        </figure>
+      </div>
+    </section>
   </article>
   <article id="bank-imports">
-    <h2>Bank imports and invoice review</h2>
-    <p class="stack"><span>Python</span><span>PowerShell</span><span>SHA-256</span><span>Idempotent CSV import</span><span>Actual Budget</span></p>
-    <p>Two bank exports can cover the same transactions. After an interrupted import, I need to determine which entries have already reached the budget. I built an importer for Actual Budget and a separate document intake routine for ADMIN DROP.</p>
+    <h2>Bank sync and invoice review</h2>
+    <p class="stack"><span>Actual Budget</span><span>Enable Banking API</span><span>Bank reconciliation</span><span>SHA-256</span></p>
+    <p>I connected my two bank accounts to Actual Budget through Enable Banking. I now start a sync in Actual instead of downloading statements. When I switched from CSV imports, I checked whether the bank feed matched transactions already in my budget.</p>
     <div class="case-body">
       <section class="architecture" aria-labelledby="arch-bank-imports">
         <h3 id="arch-bank-imports">Architecture</h3>
         <div class="panel" id="view-bank-imports">
-          <h4>Bank import</h4><figure class="schematic" data-title="Bank import">
-            <div class="frame" style="--wide:31.63416rem; --compact:18.04873rem">
-              <a class="wide" data-view="wide" href="diagrams/bank-imports-wide.svg?v=43248216b9" aria-label="Enlarge Bank import diagram"><img src="diagrams/bank-imports-wide.svg?v=43248216b9" width="506" height="937" alt="The importer waits for a stable statement, checks the account and verifies the locked copy with SHA-256. Actual Budget is backed up before import using stable transaction IDs. A verified receipt allows archiving. An uncertain write pauses the watcher for audit."></a>
-              <a class="compact" data-view="compact" href="diagrams/bank-imports-compact.svg?v=4c143c23f8" aria-label="Enlarge Bank import diagram"><img src="diagrams/bank-imports-compact.svg?v=4c143c23f8" width="289" height="925" alt="The importer waits for a stable statement, checks the account and verifies the locked copy with SHA-256. Actual Budget is backed up before import using stable transaction IDs. A verified receipt allows archiving. An uncertain write pauses the watcher for audit."></a>
+          <h4>Bank sync</h4><figure class="schematic" data-title="Bank sync">
+            <div class="frame" style="--wide:28.93367rem; --compact:16.89427rem">
+              <a class="wide" data-view="wide" href="diagrams/bank-imports-wide.svg?v=831ee35d74" aria-label="Enlarge Bank sync diagram"><img src="diagrams/bank-imports-wide.svg?v=831ee35d74" width="463" height="529" alt="Actual Budget syncs two linked accounts via Enable Banking. I compared snapshots for matched and new transactions and verified the booked balance separately from pending amounts."></a>
+              <a class="compact" data-view="compact" href="diagrams/bank-imports-compact.svg?v=3684f489e9" aria-label="Enlarge Bank sync diagram"><img src="diagrams/bank-imports-compact.svg?v=3684f489e9" width="270" height="404" alt="Actual Budget syncs two linked accounts via Enable Banking. I compared snapshots for matched and new transactions and verified the booked balance separately from pending amounts."></a>
             </div>
-            <figcaption>The receipt ties one import attempt to the exact file that was read.
-              <span class="figure-links"><a data-view="wide" href="diagrams/bank-imports-wide.svg?v=43248216b9" aria-label="Full diagram for Bank import">Full diagram</a><a class="source" href="diagrams/bank-imports.mmd?v=7e27967481" download="bank-imports.mmd" aria-label="Mermaid source for Bank import">Mermaid source</a></span>
+            <figcaption>The bank feed runs from Actual. The checks shown here are the ones I used to verify the switch.
+              <span class="figure-links"><a data-view="wide" href="diagrams/bank-imports-wide.svg?v=831ee35d74" aria-label="Full diagram for Bank sync">Full diagram</a><a class="source" href="diagrams/bank-imports.mmd?v=72b9ee2f10" download="bank-imports.mmd" aria-label="Mermaid source for Bank sync">Mermaid source</a></span>
             </figcaption>
           </figure>
         </div>
@@ -154,8 +188,8 @@
         </div>
       </section>
     <div class="checks">
-      <section><h3>Integrity checks</h3><p>The importer locks the file snapshot, backs up the budget and uses stable transaction IDs across overlapping periods. An uncertain write pauses the watcher until its receipt can be checked. In ADMIN DROP, a fingerprint verifies the original document. Visual review caught an incorrect proposed amount on a cancelled invoice.</p></section>
-      <section class="result"><h3>Verified result</h3><p>One recovery added 6 transactions and skipped 280 duplicates. Replaying the same file added 0. An independent read confirmed that entries already in the budget were preserved.</p></section>
+      <section><h3>Integrity checks</h3><p>I compared budget snapshots before and after the first sync on one account, then checked the booked balance against the bank, treating pending items separately. Invoice review follows its own workflow. A SHA-256 fingerprint verifies the original file, and visual review caught an incorrect amount on a cancelled invoice.</p></section>
+      <section class="result"><h3>Verified result</h3><p>On the first sync of that account, 235 existing entries gained bank references and 7 new transactions appeared. The comparison found no duplicates or deletions. After I entered the opening balance, the booked balance matched the bank to the cent.</p></section>
     </div>
     </div>
   </article>
@@ -196,14 +230,14 @@
     </div>
   </article>
 </main>
-<footer class="footnote"><h2>Privacy &amp; Verification</h2><p>These personal systems process my own financial records and correspondence. The diagrams and examples are anonymised. Import and calendar outcomes refer to specific documented runs. The freshness example uses synthetic timestamps from the manual pilot.</p></footer>
+<footer class="footnote"><h2>Privacy &amp; Verification</h2><p>These personal systems process my own financial records and correspondence. The diagrams and examples are anonymised. Bank sync and calendar outcomes refer to specific documented runs. The freshness example uses synthetic timestamps from the manual pilot.</p></footer>
 <dialog aria-labelledby="viewer-title">
   <div class="viewer-bar"><strong id="viewer-title"></strong><div class="viewer-tools">
     <button type="button" data-step="-1" aria-label="Zoom out">−</button>
     <button type="button" data-step="1" aria-label="Zoom in">+</button>
     <button type="button" data-close autofocus>Close</button>
   </div></div>
-  <div class="viewer-canvas" tabindex="0" role="region" aria-label="Scrollable diagram"><img alt=""></div>
+  <div class="viewer-canvas" tabindex="0" role="region" aria-label="Scrollable image"><img alt=""></div>
 </dialog>
 <script>
     for (const group of document.querySelectorAll('.architecture')) {
@@ -253,11 +287,13 @@
     const picture = canvas.querySelector('img');
     const smaller = viewer.querySelector('[data-step="-1"]');
     const larger = viewer.querySelector('[data-step="1"]');
-    const levels = [.75, 1, 1.25, 1.5, 2, 3];
+    const diagramLevels = [.75, 1, 1.25, 1.5, 2, 3];
+    let levels = diagramLevels;
     let level = 1;
-    let diagramWidth = 0;
+    let baseWidth = 0;
+    let unit = 'rem';
     function resize() {
-      picture.style.width = diagramWidth * levels[level] + 'rem';
+      picture.style.width = baseWidth * levels[level] + unit;
       smaller.disabled = level === 0;
       larger.disabled = level === levels.length - 1;
     }
@@ -278,14 +314,27 @@
           event.preventDefault();
           const figure = link.closest('figure');
           const variant = link.dataset.view === 'compact' ? 'compact' : 'wide';
-          const source = figure.querySelector('.frame .' + variant + ' img');
-          viewer.querySelector('strong').textContent = figure.dataset.title;
+          const screenshot = link.dataset.view === 'screenshot';
+          const source = screenshot ? link.querySelector('img') : figure.querySelector('.frame .' + variant + ' img');
+          viewer.querySelector('strong').textContent = figure.dataset.title || figure.querySelector('figcaption strong').textContent;
           picture.src = source.src;
           picture.alt = source.alt;
-          diagramWidth = Number(source.getAttribute('width')) / 16;
-          level = 2;
-          resize();
           viewer.showModal();
+          if (screenshot) {
+            baseWidth = Number(source.getAttribute('width'));
+            unit = 'px';
+            const style = getComputedStyle(canvas);
+            const room = canvas.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+            const fit = Math.min(room / baseWidth, 1);
+            levels = [fit, ...[.5, .75, 1, 1.25, 1.5, 2].filter(scale => scale > fit)];
+            level = levels.findIndex(scale => scale >= (room < 600 ? .5 : 1));
+          } else {
+            baseWidth = Number(source.getAttribute('width')) / 16;
+            unit = 'rem';
+            levels = diagramLevels;
+            level = 2;
+          }
+          resize();
           canvas.scrollLeft = Math.max(0, (canvas.scrollWidth - canvas.clientWidth) / 2);
           canvas.scrollTop = 0;
         });
