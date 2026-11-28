@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Victor Tricard’s personal finance and process operations portfolio. Three case studies on data integrity, exception handling and verified outcomes.">
+  <title>Victor Tricard | Finance &amp; Process Operations</title>
+  <style>
+    :root { color-scheme: dark; --paper: #0a0a0a; --text: #e6e6e6; --secondary: #bababa; --quiet: #aaa; --line: #343434; --link: #d8d8d8; font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: var(--paper); color: var(--text); }
+    * { box-sizing: border-box; }
+    body { margin: 0 auto; max-width: 76rem; padding: clamp(1rem, 3vw, 2.75rem); font-size: 1.0625rem; line-height: 1.55; overflow-wrap: anywhere; }
+    h1, h2, h3, h4, p, figure { margin: 0; }
+    h1, h2, h3, h4 { line-height: 1.22; font-weight: 600; letter-spacing: -.025em; }
+    h1 { font-size: clamp(2rem, 4vw, 3rem); }
+    h2 { font-size: clamp(1.45rem, 2.6vw, 1.85rem); }
+    h3 { font-size: 1.1875rem; }
+    h4 { font-size: 1rem; }
+    a { color: var(--link); text-underline-offset: .2em; text-decoration-thickness: 1px; }
+    a:hover, button:hover { color: var(--text); }
+    :focus-visible { outline: 2px solid var(--link); outline-offset: 3px; }
+    button { font: inherit; color: inherit; }
+    .skip { position: absolute; inset: .5rem auto auto .5rem; transform: translateY(-200%); background: var(--paper); padding: .4rem; }
+    .skip:focus { transform: none; }
+    header { padding: .5rem 0 1.4rem; }
+    .name, .links, .case-nav, .stack, figcaption, .views, dialog { font-size: 1rem; }
+    .name { color: var(--quiet); margin-bottom: .45rem; }
+    header > p:not(.name) { margin-top: .65rem; max-width: 76ch; }
+    .links, .case-nav { display: flex; align-items: center; flex-wrap: wrap; gap: .4rem 1.3rem; }
+    .links { margin-top: .85rem; }
+    .case-nav { border-block: 1px solid var(--line); padding: .65rem 0; }
+    article { padding: 1.7rem 0 2.2rem; border-bottom: 1px solid var(--line); scroll-margin-top: 1rem; }
+    article > p { max-width: 82ch; }
+    .stack { display: flex; flex-wrap: wrap; gap: .1rem .55rem; margin-block: .4rem .75rem; color: var(--quiet); font-family: ui-monospace, Consolas, monospace; max-width: none; }
+    .stack span + span::before { content: "·"; margin-right: .55rem; }
+    .case-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.65rem; margin-top: 1.65rem; }
+    .architecture, .schematic { min-width: 0; }
+    .architecture { container-type: inline-size; }
+    .views { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: .6rem; border-bottom: 1px solid var(--line); }
+    .views button { cursor: pointer; padding: .32rem 0; background: none; border: 0; color: var(--quiet); border-bottom: 1px solid transparent; }
+    .views button[aria-selected="true"] { border-color: var(--text); color: var(--text); }
+    .panel > h4 { margin: .8rem 0 .2rem; }
+    .frame { overflow: auto; padding: 1.05rem 0; }
+    .frame a { display: block; width: var(--wide); margin-inline: auto; cursor: zoom-in; }
+    .frame img { display: block; width: 100%; height: auto; }
+    .frame .compact { display: none; }
+    figcaption { color: var(--quiet); }
+    .figure-links { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: .25rem; }
+    .figure-links a { color: var(--secondary); }
+    .checks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
+    .checks p { margin-top: .45rem; }
+    .checks h3 { margin: 0; }
+
+    .interface-preview { margin-top: 1.65rem; }
+    .interface-preview > p { color: var(--quiet); margin-top: .4rem; }
+    .interface-shots { display: grid; gap: 1.75rem; margin-top: .9rem; }
+    .interface-shots figure { min-width: 0; }
+    .interface-shots a { display: block; margin-top: .5rem; cursor: zoom-in; }
+    .interface-shots figcaption p { margin-top: .2rem; }
+    .interface-shots img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: .35rem; }
+    .footnote { padding: 1.05rem 0; }
+    .footnote h2 { font-size: 1.1875rem; }
+    .footnote p { margin-top: .4rem; max-width: 82ch; color: var(--secondary); }
+    [hidden] { display: none !important; }
+    dialog { background: var(--paper); color: var(--text); border: 1px solid var(--line); border-radius: .35rem; padding: 0; width: min(64rem, 96vw); max-width: 96vw; max-height: 92dvh; }
+    dialog::backdrop { background: rgb(0 0 0 / 78%); }
+    .viewer-bar { display: flex; align-items: center; justify-content: space-between; gap: .45rem; flex-wrap: wrap; padding: .5rem .75rem; border-bottom: 1px solid var(--line); }
+    .viewer-tools { display: flex; gap: .3rem; }
+    .viewer-tools button { min-width: 2.5rem; min-height: 2.5rem; border: 1px solid var(--line); border-radius: 3px; background: transparent; cursor: pointer; }
+    .viewer-tools button:last-child { padding-inline: .7rem; }
+    .viewer-tools button:disabled { opacity: .45; }
+    .viewer-canvas { overflow: auto; max-height: 72dvh; padding: 1rem; }
+    .viewer-canvas img { display: block; margin-inline: auto; height: auto; }
+    @media (max-width: 47rem) {
+      .checks { display: block; }
+      .checks section + section { margin-top: 1.2rem; }
+      .case-body { margin-top: 1.3rem; }
+    }
+    /* Switch all diagrams together when the longest horizontal flow no longer fits. */
+    @media screen {
+      @container (max-width: 69.3rem) {
+        .frame .wide { display: none; }
+        .frame .compact { display: block; width: var(--compact); }
+      }
+    }
+    @media print {
+      :root { color-scheme: light; --paper: #fff; --text: #000; --secondary: #222; --quiet: #333; --line: #bbb; --link: #000; }
+      body { padding: 0; }
+      .skip, .case-nav, .figure-links, .views, dialog { display: none !important; }
+      .case-body, .checks { display: block; }
+      .schematic { break-inside: avoid; }
+      .panel[hidden], .panel > h4[hidden] { display: block !important; }
+      .frame { overflow: visible; }
+      .frame .compact { display: none !important; }
+      .frame .wide { display: block; max-width: 100%; }
+      .frame img { filter: invert(1) grayscale(1); }
+      .checks section, .footnote { margin-top: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<a class="skip" href="#studies">Skip to case studies</a>
+<header>
+  <p class="name">Victor Tricard · Berlin · EN / FR / DE</p>
+  <h1>Finance &amp; Process Operations</h1>
+  <p>I design and run automated finance and operations workflows with Python, SQLite, n8n and AI-assisted coding. I use deterministic checks before writes and route ambiguous cases to human review.</p>
+  <nav class="links" aria-label="Profile"><a href="https://www.linkedin.com/in/victor-tricard-893660300/">LinkedIn</a><a href="mailto:victortricard@gmail.com">Email</a></nav>
+</header>
+<main id="studies" tabindex="-1">
+  <nav class="case-nav" aria-label="Case studies"><a href="#holdings">Holdings</a><a href="#bank-imports">Bank sync &amp; invoices</a><a href="#email">Email workflows</a></nav>
+  <article id="holdings">
+    <h2>Holdings and freshness monitoring</h2>
+    <p class="stack"><span>Python</span><span>SQLite</span><span>React</span><span>Linux VPS (systemd)</span><span>Read-only sources (IBKR, OKX, Kraken, Solana, Lighter)</span></p>
+    <p>My broker, exchanges and wallets update at different times. To value a position, I need to know when the account was read and how recent its price is.</p>
+    <div class="case-body">
+      <section class="architecture" aria-labelledby="arch-holdings">
+        <h3 id="arch-holdings">Architecture</h3>
+        <div class="panel" id="view-holdings">
+          <figure class="schematic" data-title="Holdings freshness pilot">
+            <div class="frame" style="--wide:64.86242rem; --compact:22.11650rem">
+              <a class="wide" data-view="wide" href="diagrams/holdings-wide.svg?v=0d97335a24" aria-label="Enlarge Holdings freshness pilot diagram"><img src="diagrams/holdings-wide.svg?v=0d97335a24" width="1038" height="305" alt="A manual check reads Holdings status and source timestamps. A new incident produces one local report. Repeat observations are deduplicated. A healthy reading closes an open incident or leaves the log untouched."></a>
+              <a class="compact" data-view="compact" href="diagrams/holdings-compact.svg?v=747f3b69f7" aria-label="Enlarge Holdings freshness pilot diagram"><img src="diagrams/holdings-compact.svg?v=747f3b69f7" width="354" height="600" alt="A manual check reads Holdings status and source timestamps. A new incident produces one local report. Repeat observations are deduplicated. A healthy reading closes an open incident or leaves the log untouched."></a>
+            </div>
+            <figcaption>The manual pilot checks balance and price timestamps independently.
+              <span class="figure-links"><a data-view="wide" href="diagrams/holdings-wide.svg?v=0d97335a24" aria-label="Full diagram for Holdings freshness pilot">Full diagram</a><a class="source" href="diagrams/holdings.mmd?v=6c99222a0f" download="holdings.mmd" aria-label="Mermaid source for Holdings freshness pilot">Mermaid source</a></span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+    <div class="checks">
+      <section><h3>Integrity checks</h3><p>Holdings stores each observation by source, account and instrument. A missing price leaves the valuation unavailable. Net account value and leveraged exposure have separate fields. The monitoring pilot tracks balance and price timestamps independently and requires a successful, fresh reading before closing an incident.</p></section>
+      <section class="result"><h3>Verified result</h3><p>Holdings runs as a systemd service on a Linux VPS and collects read-only data from five live platforms. Backups are encrypted, and I verified an isolated restore.</p><p>In a separate synthetic pilot test, the balance was 601 seconds old and its price was 10 seconds old. Only the balance exceeded its threshold (180 seconds for balances, 300 for prices). Repeated checks produced one incident report for that episode.</p></section>
+    </div>
+    </div>
+    <section class="interface-preview" aria-labelledby="holdings-preview-title">
+      <h3 id="holdings-preview-title">Interface preview</h3>
+      <p>The Holdings dashboard uses fictional balances, positions and prices in this preview.</p>
+      <div class="interface-shots">
+        <figure>
+          <figcaption>
+            <strong>Portfolio overview</strong>
+            <p>Four sample accounts with gaps where readings are missing. Holdings automatically matches new Lighter positions to their market logos.</p>
+          </figcaption>
+          <a href="images/holdings-overview.png" data-view="screenshot" aria-label="Enlarge Portfolio overview">
+            <img src="images/holdings-overview.png" width="1440" height="1310" loading="lazy" decoding="async"
+               alt="Holdings dashboard with a portfolio value chart, an account summary and an assets table.">
+          </a>
+        </figure>
+        <figure>
+          <figcaption>
+            <strong>NVDA position detail</strong>
+            <p>Net account value and leveraged exposure shown separately, with the price source, 30-second chart refresh, and entry, mark and estimated liquidation levels.</p>
+          </figcaption>
+          <a href="images/holdings-position.png" data-view="screenshot" aria-label="Enlarge NVDA position detail">
+            <img src="images/holdings-position.png" width="1440" height="2020" loading="lazy" decoding="async"
+               alt="NVDA drawer over the dimmed dashboard, with a funding panel, a candlestick chart and a position summary.">
+          </a>
+        </figure>
+      </div>
+    </section>
+  </article>
+  <article id="bank-imports">
+    <h2>Bank sync and invoice review</h2>
+    <p class="stack"><span>Actual Budget</span><span>Enable Banking API</span><span>Bank reconciliation</span><span>SHA-256</span></p>
+    <p>I connected my two bank accounts to Actual Budget through Enable Banking. I now start a sync in Actual instead of downloading statements. When I switched from CSV imports, I checked whether the bank feed matched transactions already in my budget.</p>
+    <div class="case-body">
+      <section class="architecture" aria-labelledby="arch-bank-imports">
+        <h3 id="arch-bank-imports">Architecture</h3>
+        <div class="panel" id="view-bank-imports">
+          <h4>Bank sync</h4><figure class="schematic" data-title="Bank sync">
+            <div class="frame" style="--wide:69.29432rem; --compact:16.89427rem">
+              <a class="wide" data-view="wide" href="diagrams/bank-imports-wide.svg?v=3f31127cd7" aria-label="Enlarge Bank sync diagram"><img src="diagrams/bank-imports-wide.svg?v=3f31127cd7" width="1109" height="161" alt="Actual Budget syncs two linked accounts via Enable Banking. I compared snapshots for matched and new transactions and verified the booked balance separately from pending amounts."></a>
+              <a class="compact" data-view="compact" href="diagrams/bank-imports-compact.svg?v=3684f489e9" aria-label="Enlarge Bank sync diagram"><img src="diagrams/bank-imports-compact.svg?v=3684f489e9" width="270" height="404" alt="Actual Budget syncs two linked accounts via Enable Banking. I compared snapshots for matched and new transactions and verified the booked balance separately from pending amounts."></a>
+            </div>
+            <figcaption>The bank feed runs from Actual. The checks shown here are the ones I used to verify the switch.
+              <span class="figure-links"><a data-view="wide" href="diagrams/bank-imports-wide.svg?v=3f31127cd7" aria-label="Full diagram for Bank sync">Full diagram</a><a class="source" href="diagrams/bank-imports.mmd?v=2d8e5f2aa0" download="bank-imports.mmd" aria-label="Mermaid source for Bank sync">Mermaid source</a></span>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="panel" id="view-invoice-intake">
+          <h4>Invoice intake</h4><figure class="schematic" data-title="Invoice intake">
+            <div class="frame" style="--wide:68.27326rem; --compact:17.89949rem">
+              <a class="wide" data-view="wide" href="diagrams/invoice-intake-wide.svg?v=e20e8f743d" aria-label="Enlarge Invoice intake diagram"><img src="diagrams/invoice-intake-wide.svg?v=e20e8f743d" width="1092" height="161" alt="Downloads and manually supplied scans reach document intake. The original is checked with SHA-256. Documents with a clear type and destination are filed with a trace. Unclear documents stay in the review queue."></a>
+              <a class="compact" data-view="compact" href="diagrams/invoice-intake-compact.svg?v=15346e8854" aria-label="Enlarge Invoice intake diagram"><img src="diagrams/invoice-intake-compact.svg?v=15346e8854" width="286" height="430" alt="Downloads and manually supplied scans reach document intake. The original is checked with SHA-256. Documents with a clear type and destination are filed with a trace. Unclear documents stay in the review queue."></a>
+            </div>
+            <figcaption>The original file and its fingerprint remain available for visual review.
+              <span class="figure-links"><a data-view="wide" href="diagrams/invoice-intake-wide.svg?v=e20e8f743d" aria-label="Full diagram for Invoice intake">Full diagram</a><a class="source" href="diagrams/invoice-intake.mmd?v=e1e68a92e3" download="invoice-intake.mmd" aria-label="Mermaid source for Invoice intake">Mermaid source</a></span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+    <div class="checks">
+      <section><h3>Integrity checks</h3><p>I compared budget snapshots before and after the first sync on one account, then checked the booked balance against the bank, treating pending items separately. Invoice review follows its own workflow. A SHA-256 fingerprint verifies the original file, and visual review caught an incorrect amount on a cancelled invoice.</p></section>
+      <section class="result"><h3>Verified result</h3><p>On the first sync of that account, 235 existing entries gained bank references and 7 new transactions appeared. The comparison found no duplicates or deletions. After I entered the opening balance, the booked balance matched the bank to the cent.</p></section>
+    </div>
+    </div>
+  </article>
+  <article id="email">
+    <h2>Calendar changes and application replies</h2>
+    <p class="stack"><span>n8n</span><span>Python</span><span>SQLite</span><span>Local LLM (NuExtract)</span><span>PII masking</span><span>Google Calendar API</span></p>
+    <p>A rescheduled invitation can create a second appointment. A reply from an employer can concern just one of two open applications. I use local AI extraction to propose changes and source checks to decide which record can be updated.</p>
+    <div class="case-body">
+      <section class="architecture" aria-labelledby="arch-email">
+        <h3 id="arch-email">Architecture</h3>
+        <div class="panel" id="view-email">
+          <h4>Calendar updates</h4><figure class="schematic" data-title="Calendar updates">
+            <div class="frame" style="--wide:67.25354rem; --compact:21.80871rem">
+              <a class="wide" data-view="wide" href="diagrams/email-wide.svg?v=8f265626e2" aria-label="Enlarge Calendar updates diagram"><img src="diagrams/email-wide.svg?v=8f265626e2" width="1076" height="201" alt="Local extraction proposes a calendar change. Ambiguous evidence goes to human review. Invitation updates are matched by event ID and version. Current events are skipped. Valid changes are written and read back by ID."></a>
+              <a class="compact" data-view="compact" href="diagrams/email-compact.svg?v=077481e1d5" aria-label="Enlarge Calendar updates diagram"><img src="diagrams/email-compact.svg?v=077481e1d5" width="349" height="461" alt="Local extraction proposes a calendar change. Ambiguous evidence goes to human review. Invitation updates are matched by event ID and version. Current events are skipped. Valid changes are written and read back by ID."></a>
+            </div>
+            <figcaption>A changed invitation has to match the event before its new time can be written.
+              <span class="figure-links"><a data-view="wide" href="diagrams/email-wide.svg?v=8f265626e2" aria-label="Full diagram for Calendar updates">Full diagram</a><a class="source" href="diagrams/email.mmd?v=1b08737d5a" download="email.mmd" aria-label="Mermaid source for Calendar updates">Mermaid source</a></span>
+            </figcaption>
+          </figure>
+        </div>
+        <div class="panel" id="view-application-replies">
+          <h4>Application replies</h4><figure class="schematic" data-title="Application replies">
+            <div class="frame" style="--wide:65.10424rem; --compact:19.38169rem">
+              <a class="wide" data-view="wide" href="diagrams/application-replies-wide.svg?v=b883259c14" aria-label="Enlarge Application replies diagram"><img src="diagrams/application-replies-wide.svg?v=b883259c14" width="1042" height="178" alt="A local model extracts a reply type and quote. The tracker checks the quote against the message and identifies the specific role. Clear decisions are journalled in SQLite. Conflicting evidence goes to review."></a>
+              <a class="compact" data-view="compact" href="diagrams/application-replies-compact.svg?v=7ab424020d" aria-label="Enlarge Application replies diagram"><img src="diagrams/application-replies-compact.svg?v=7ab424020d" width="310" height="512" alt="A local model extracts a reply type and quote. The tracker checks the quote against the message and identifies the specific role. Clear decisions are journalled in SQLite. Conflicting evidence goes to review."></a>
+            </div>
+            <figcaption>The tracker checks the quote in the current message and matches it to one role.
+              <span class="figure-links"><a data-view="wide" href="diagrams/application-replies-wide.svg?v=b883259c14" aria-label="Full diagram for Application replies">Full diagram</a><a class="source" href="diagrams/application-replies.mmd?v=e02459bda6" download="application-replies.mmd" aria-label="Mermaid source for Application replies">Mermaid source</a></span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+    <div class="checks">
+      <section><h3>Integrity checks</h3><p>The calendar workflow checks dates, time zone and, for invitation updates, event ID and version. It reads each write back by event ID. Eligible calendar excerpts are masked before external classification, and attachments stay local. The tracker checks that the quote appears in the current message and matches the employer and role. Conflicting evidence goes to human review.</p></section>
+      <section class="result"><h3>Verified result</h3><p>A rescheduled interview produced 1 event at the revised time, with 0 actions left on replay. The calendar fix passed 83 tests. In a separate tracker case, a rejection changed only the relevant one of two applications at the same employer.</p></section>
+    </div>
+    </div>
+  </article>
+</main>
+<footer class="footnote"><h2>Privacy &amp; Verification</h2><p>These personal systems process my own financial records and correspondence. The diagrams and examples are anonymised. Bank sync and calendar outcomes refer to specific documented runs. The freshness example uses synthetic timestamps from the manual pilot.</p></footer>
+<dialog aria-labelledby="viewer-title">
+  <div class="viewer-bar"><strong id="viewer-title"></strong><div class="viewer-tools">
+    <button type="button" data-step="-1" aria-label="Zoom out">−</button>
+    <button type="button" data-step="1" aria-label="Zoom in">+</button>
+    <button type="button" data-close autofocus>Close</button>
+  </div></div>
+  <div class="viewer-canvas" tabindex="0" role="region" aria-label="Scrollable image"><img alt=""></div>
+</dialog>
+<script>
+    for (const group of document.querySelectorAll('.architecture')) {
+      const panels = [...group.querySelectorAll('.panel')];
+      if (panels.length < 2) continue;
+      const tabs = document.createElement('div');
+      tabs.className = 'views';
+      tabs.setAttribute('role', 'tablist');
+      tabs.setAttribute('aria-label', 'Workflow diagrams');
+      const buttons = panels.map(panel => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.id = 'tab-' + panel.id;
+        button.textContent = panel.querySelector('h4').textContent;
+        button.setAttribute('role', 'tab');
+        button.setAttribute('aria-controls', panel.id);
+        panel.setAttribute('role', 'tabpanel');
+        panel.setAttribute('aria-labelledby', button.id);
+        panel.querySelector('h4').hidden = true;
+        tabs.append(button);
+        return button;
+      });
+      function select(index) {
+        buttons.forEach((button, i) => {
+          button.setAttribute('aria-selected', String(i === index));
+          button.tabIndex = i === index ? 0 : -1;
+          panels[i].hidden = i !== index;
+        });
+      }
+      buttons.forEach((button, index) => {
+        button.addEventListener('click', () => select(index));
+        button.addEventListener('keydown', event => {
+          const last = buttons.length - 1;
+          const next = { ArrowRight: (index + 1) % buttons.length, ArrowLeft: (index + last) % buttons.length, Home: 0, End: last }[event.key];
+          if (next === undefined) return;
+          event.preventDefault();
+          select(next);
+          buttons[next].focus();
+        });
+      });
+      panels[0].before(tabs);
+      select(0);
+    }
+
+    const viewer = document.querySelector('dialog');
+    const canvas = viewer.querySelector('.viewer-canvas');
+    const picture = canvas.querySelector('img');
+    const smaller = viewer.querySelector('[data-step="-1"]');
+    const larger = viewer.querySelector('[data-step="1"]');
+    const diagramLevels = [.75, 1, 1.25, 1.5, 2, 3];
+    let levels = diagramLevels;
+    let level = 1;
+    let baseWidth = 0;
+    let unit = 'rem';
+    function resize() {
+      picture.style.width = baseWidth * levels[level] + unit;
+      smaller.disabled = level === 0;
+      larger.disabled = level === levels.length - 1;
+    }
+    for (const btn of [smaller, larger]) {
+      btn.addEventListener('click', () => {
+        const x = (canvas.scrollLeft + canvas.clientWidth / 2) / canvas.scrollWidth;
+        const y = (canvas.scrollTop + canvas.clientHeight / 2) / canvas.scrollHeight;
+        level += Number(btn.dataset.step);
+        resize();
+        canvas.scrollLeft = x * canvas.scrollWidth - canvas.clientWidth / 2;
+        canvas.scrollTop = y * canvas.scrollHeight - canvas.clientHeight / 2;
+      });
+    }
+    if (typeof viewer.showModal === 'function') {
+      for (const link of document.querySelectorAll('[data-view]')) {
+        link.addEventListener('click', event => {
+          if (event.ctrlKey || event.metaKey || event.shiftKey || event.altKey || event.button !== 0) return;
+          event.preventDefault();
+          const figure = link.closest('figure');
+          const variant = link.dataset.view === 'compact' ? 'compact' : 'wide';
+          const screenshot = link.dataset.view === 'screenshot';
+          const source = screenshot ? link.querySelector('img') : figure.querySelector('.frame .' + variant + ' img');
+          viewer.querySelector('strong').textContent = figure.dataset.title || figure.querySelector('figcaption strong').textContent;
+          picture.src = source.src;
+          picture.alt = source.alt;
+          viewer.showModal();
+          if (screenshot) {
+            baseWidth = Number(source.getAttribute('width'));
+            unit = 'px';
+            const style = getComputedStyle(canvas);
+            const room = canvas.clientWidth - parseFloat(style.paddingLeft) - parseFloat(style.paddingRight);
+            const fit = Math.min(room / baseWidth, 1);
+            levels = [fit, ...[.5, .75, 1, 1.25, 1.5, 2].filter(scale => scale > fit)];
+            level = levels.findIndex(scale => scale >= (room < 600 ? .5 : 1));
+          } else {
+            baseWidth = Number(source.getAttribute('width')) / 16;
+            unit = 'rem';
+            levels = diagramLevels;
+            level = 2;
+          }
+          resize();
+          canvas.scrollLeft = Math.max(0, (canvas.scrollWidth - canvas.clientWidth) / 2);
+          canvas.scrollTop = 0;
+        });
+      }
+      viewer.querySelector('[data-close]').addEventListener('click', () => viewer.close());
+    }
+</script>
+</body>
+</html>

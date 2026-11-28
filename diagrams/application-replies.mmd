@@ -17,19 +17,19 @@ config:
     htmlLabels: false
     useMaxWidth: false
     nodeSpacing: 26
-    rankSpacing: 30
+    rankSpacing: 22
     wrappingWidth: 240
     padding: 8
     diagramPadding: 5
     curve: basis
   themeCSS: 'text,tspan{font-family:system-ui,sans-serif!important;font-weight:400!important}.node rect.label-container{rx:3px;ry:3px}.node rect,.node polygon,.flowchart-link{stroke-width:.85px!important}.edgeLabel .labelBkg{fill:#0a0a0a!important;opacity:1!important}.edgeLabel text{fill:#bebebe!important}'
 ---
-flowchart TB
+flowchart LR
   accTitle: Application replies
   accDescr: A local model extracts a reply type and quote. The tracker checks the quote against the message and identifies the specific role. Clear decisions are journalled in SQLite. Conflicting evidence goes to review.
-  pages["Read collected email pages"] --> registry["Match employer and open roles"]
-  registry --> quote["Extract reply type and quote locally"]
-  quote --> proof{"Quote in current<br/>mail, role verified?"}
-  proof -.->|Unclear| review["Queue for human review"]
-  proof -->|Verified| write["Record decision in SQLite"]
-  write --> views["Refresh application tracker"]
+  pages["Read collected<br/>email"] --> registry["Match employer<br/>and open roles"]
+  registry --> quote["Extract quote<br/>and reply type"]
+  quote --> proof{"Quote and role<br/>verified?"}
+  proof -.->|Unclear| review["Queue for<br/>human review"]
+  proof -->|Verified| write["Log decision<br/>in SQLite"]
+  write --> views["Refresh<br/>tracker"]

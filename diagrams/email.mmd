@@ -17,20 +17,20 @@ config:
     htmlLabels: false
     useMaxWidth: false
     nodeSpacing: 26
-    rankSpacing: 30
+    rankSpacing: 22
     wrappingWidth: 240
     padding: 8
     diagramPadding: 5
     curve: basis
   themeCSS: 'text,tspan{font-family:system-ui,sans-serif!important;font-weight:400!important}.node rect.label-container{rx:3px;ry:3px}.node rect,.node polygon,.flowchart-link{stroke-width:.85px!important}.edgeLabel .labelBkg{fill:#0a0a0a!important;opacity:1!important}.edgeLabel text{fill:#bebebe!important}'
 ---
-flowchart TB
+flowchart LR
   accTitle: Calendar updates
   accDescr: Local extraction proposes a calendar change. Ambiguous evidence goes to human review. A supported invitation is matched to the calendar, where current events are skipped and changes are written and read back by ID.
-  mail["Read email and invitation"] --> extract["Extract dates, time zone<br/>and invitation evidence locally"]
+  mail["Read email<br/>or invitation"] --> extract["Extract dates,<br/>zone and quote"]
   extract --> proof{"Event<br/>identifiable?"}
-  proof -.->|Unclear| review["Hold for human review"]
-  proof -->|Supported| match["Match event ID and version<br/>for invitation updates"]
-  match -->|Already current| noop["Skip write"]
-  match -->|Change verified| write["Update Google Calendar"]
-  write --> verify["Read back by event ID"]
+  proof -.->|Unclear| review["Hold for<br/>human review"]
+  proof -->|Supported| match["Match ID<br/>and version"]
+  match -->|Current| noop["Skip write"]
+  match -->|Changed| write["Write to<br/>Calendar"]
+  write --> verify["Read back<br/>by ID"]

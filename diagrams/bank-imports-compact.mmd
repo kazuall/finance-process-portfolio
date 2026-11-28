@@ -16,23 +16,20 @@ config:
   flowchart:
     htmlLabels: false
     useMaxWidth: false
-    nodeSpacing: 14
-    rankSpacing: 26
-    wrappingWidth: 220
+    nodeSpacing: 15
+    rankSpacing: 24
+    wrappingWidth: 240
     padding: 8
     diagramPadding: 5
     curve: basis
   themeCSS: 'text,tspan{font-family:system-ui,sans-serif!important;font-weight:400!important}.node rect.label-container{rx:3px;ry:3px}.node rect,.node polygon,.flowchart-link{stroke-width:.85px!important}.edgeLabel .labelBkg{fill:#0a0a0a!important;opacity:1!important}.edgeLabel text{fill:#bebebe!important}'
 ---
 flowchart TB
-  accTitle: Bank import
-  accDescr: A stable statement for the expected account is copied under a lock. Actual Budget is backed up before import using stable transaction IDs. A verified receipt allows archiving. An uncertain write pauses the watcher for audit.
-  csv["Poll for bank CSV"] --> stable{"File stable?"}
-  stable -->|Wait| csv
-  stable -->|Yes| account{"Expected<br/>account?"}
-  account -->|No| reject["Reject"]
-  account -->|Yes| lock["Lock snapshot<br/>Check SHA-256"]
-  lock --> write["Back up and import<br/>Stable transaction IDs"]
-  write --> audit{"Receipt and<br/>read-back OK?"}
-  audit -.->|Unclear| pause["Pause for<br/>review"]
-  audit -->|Verified| archive["Verify<br/>archive"]
+  accTitle: Bank sync and reconciliation
+  accDescr: Actual Budget reads two linked accounts through Enable Banking. I compare budget snapshots to check matched and new entries, then reconcile the booked balance separately from pending amounts.
+  start["Start sync in Actual"] --> feed["Enable Banking API<br/>Two linked accounts"]
+  feed --> audit["Compare budget snapshots<br/>before and after sync"]
+  audit --> existing["Match bank<br/>references"]
+  audit --> added["Check new<br/>entries"]
+  existing --> balance["Verify booked balance<br/>excluding pending items"]
+  added --> balance

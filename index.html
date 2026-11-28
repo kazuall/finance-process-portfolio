@@ -32,8 +32,9 @@
     article > p { max-width: 82ch; }
     .stack { display: flex; flex-wrap: wrap; gap: .1rem .55rem; margin-block: .4rem .75rem; color: var(--quiet); font-family: ui-monospace, Consolas, monospace; max-width: none; }
     .stack span + span::before { content: "·"; margin-right: .55rem; }
-    .case-body { display: grid; grid-template-columns: minmax(0, 1.8fr) minmax(0, 1fr); gap: clamp(1.5rem, 4vw, 3.75rem); margin-top: 1.65rem; }
+    .case-body { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.65rem; margin-top: 1.65rem; }
     .architecture, .schematic { min-width: 0; }
+    .architecture { container-type: inline-size; }
     .views { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: .6rem; border-bottom: 1px solid var(--line); }
     .views button { cursor: pointer; padding: .32rem 0; background: none; border: 0; color: var(--quiet); border-bottom: 1px solid transparent; }
     .views button[aria-selected="true"] { border-color: var(--text); color: var(--text); }
@@ -45,7 +46,7 @@
     figcaption { color: var(--quiet); }
     .figure-links { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: .25rem; }
     .figure-links a { color: var(--secondary); }
-    .checks section + section { margin-top: 1.3rem; }
+    .checks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 2rem; }
     .checks p { margin-top: .45rem; }
     .checks h3 { margin: 0; }
 
@@ -69,17 +70,17 @@
     .viewer-tools button:disabled { opacity: .45; }
     .viewer-canvas { overflow: auto; max-height: 72dvh; padding: 1rem; }
     .viewer-canvas img { display: block; margin-inline: auto; height: auto; }
-    @media (max-width: 75rem) {
-      .case-body { grid-template-columns: minmax(0,1fr); }
-      .checks { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1.5rem; }
-      .checks section + section { margin: 0; }
-    }
     @media (max-width: 47rem) {
       .checks { display: block; }
       .checks section + section { margin-top: 1.2rem; }
-      .frame .wide { display: none; }
-      .frame .compact { display: block; width: var(--compact); }
       .case-body { margin-top: 1.3rem; }
+    }
+    /* Switch all diagrams together when the longest horizontal flow no longer fits. */
+    @media screen {
+      @container (max-width: 69.3rem) {
+        .frame .wide { display: none; }
+        .frame .compact { display: block; width: var(--compact); }
+      }
     }
     @media print {
       :root { color-scheme: light; --paper: #fff; --text: #000; --secondary: #222; --quiet: #333; --line: #bbb; --link: #000; }
@@ -115,12 +116,12 @@
         <h3 id="arch-holdings">Architecture</h3>
         <div class="panel" id="view-holdings">
           <figure class="schematic" data-title="Holdings freshness pilot">
-            <div class="frame" style="--wide:38.07617rem; --compact:22.11650rem">
-              <a class="wide" data-view="wide" href="diagrams/holdings-wide.svg?v=5b1b890ad4" aria-label="Enlarge Holdings freshness pilot diagram"><img src="diagrams/holdings-wide.svg?v=5b1b890ad4" width="609" height="518" alt="A manual check reads Holdings status and source timestamps. A new incident produces one local report. Repeat observations are deduplicated. A healthy reading closes an open incident or leaves the log untouched."></a>
+            <div class="frame" style="--wide:64.86242rem; --compact:22.11650rem">
+              <a class="wide" data-view="wide" href="diagrams/holdings-wide.svg?v=0d97335a24" aria-label="Enlarge Holdings freshness pilot diagram"><img src="diagrams/holdings-wide.svg?v=0d97335a24" width="1038" height="305" alt="A manual check reads Holdings status and source timestamps. A new incident produces one local report. Repeat observations are deduplicated. A healthy reading closes an open incident or leaves the log untouched."></a>
               <a class="compact" data-view="compact" href="diagrams/holdings-compact.svg?v=747f3b69f7" aria-label="Enlarge Holdings freshness pilot diagram"><img src="diagrams/holdings-compact.svg?v=747f3b69f7" width="354" height="600" alt="A manual check reads Holdings status and source timestamps. A new incident produces one local report. Repeat observations are deduplicated. A healthy reading closes an open incident or leaves the log untouched."></a>
             </div>
             <figcaption>The manual pilot checks balance and price timestamps independently.
-              <span class="figure-links"><a data-view="wide" href="diagrams/holdings-wide.svg?v=5b1b890ad4" aria-label="Full diagram for Holdings freshness pilot">Full diagram</a><a class="source" href="diagrams/holdings.mmd?v=80cbd9eb6a" download="holdings.mmd" aria-label="Mermaid source for Holdings freshness pilot">Mermaid source</a></span>
+              <span class="figure-links"><a data-view="wide" href="diagrams/holdings-wide.svg?v=0d97335a24" aria-label="Full diagram for Holdings freshness pilot">Full diagram</a><a class="source" href="diagrams/holdings.mmd?v=6c99222a0f" download="holdings.mmd" aria-label="Mermaid source for Holdings freshness pilot">Mermaid source</a></span>
             </figcaption>
           </figure>
         </div>
@@ -166,23 +167,23 @@
         <h3 id="arch-bank-imports">Architecture</h3>
         <div class="panel" id="view-bank-imports">
           <h4>Bank sync</h4><figure class="schematic" data-title="Bank sync">
-            <div class="frame" style="--wide:28.93367rem; --compact:16.89427rem">
-              <a class="wide" data-view="wide" href="diagrams/bank-imports-wide.svg?v=831ee35d74" aria-label="Enlarge Bank sync diagram"><img src="diagrams/bank-imports-wide.svg?v=831ee35d74" width="463" height="529" alt="Actual Budget syncs two linked accounts via Enable Banking. I compared snapshots for matched and new transactions and verified the booked balance separately from pending amounts."></a>
+            <div class="frame" style="--wide:69.29432rem; --compact:16.89427rem">
+              <a class="wide" data-view="wide" href="diagrams/bank-imports-wide.svg?v=3f31127cd7" aria-label="Enlarge Bank sync diagram"><img src="diagrams/bank-imports-wide.svg?v=3f31127cd7" width="1109" height="161" alt="Actual Budget syncs two linked accounts via Enable Banking. I compared snapshots for matched and new transactions and verified the booked balance separately from pending amounts."></a>
               <a class="compact" data-view="compact" href="diagrams/bank-imports-compact.svg?v=3684f489e9" aria-label="Enlarge Bank sync diagram"><img src="diagrams/bank-imports-compact.svg?v=3684f489e9" width="270" height="404" alt="Actual Budget syncs two linked accounts via Enable Banking. I compared snapshots for matched and new transactions and verified the booked balance separately from pending amounts."></a>
             </div>
             <figcaption>The bank feed runs from Actual. The checks shown here are the ones I used to verify the switch.
-              <span class="figure-links"><a data-view="wide" href="diagrams/bank-imports-wide.svg?v=831ee35d74" aria-label="Full diagram for Bank sync">Full diagram</a><a class="source" href="diagrams/bank-imports.mmd?v=72b9ee2f10" download="bank-imports.mmd" aria-label="Mermaid source for Bank sync">Mermaid source</a></span>
+              <span class="figure-links"><a data-view="wide" href="diagrams/bank-imports-wide.svg?v=3f31127cd7" aria-label="Full diagram for Bank sync">Full diagram</a><a class="source" href="diagrams/bank-imports.mmd?v=2d8e5f2aa0" download="bank-imports.mmd" aria-label="Mermaid source for Bank sync">Mermaid source</a></span>
             </figcaption>
           </figure>
         </div>
         <div class="panel" id="view-invoice-intake">
           <h4>Invoice intake</h4><figure class="schematic" data-title="Invoice intake">
-            <div class="frame" style="--wide:31.78634rem; --compact:17.89949rem">
-              <a class="wide" data-view="wide" href="diagrams/invoice-intake-wide.svg?v=b037074dcc" aria-label="Enlarge Invoice intake diagram"><img src="diagrams/invoice-intake-wide.svg?v=b037074dcc" width="509" height="608" alt="Downloads and manually supplied scans reach document intake. The original is checked with SHA-256. Documents with a clear type and destination are filed with a trace. Unclear documents stay in the review queue."></a>
+            <div class="frame" style="--wide:68.27326rem; --compact:17.89949rem">
+              <a class="wide" data-view="wide" href="diagrams/invoice-intake-wide.svg?v=e20e8f743d" aria-label="Enlarge Invoice intake diagram"><img src="diagrams/invoice-intake-wide.svg?v=e20e8f743d" width="1092" height="161" alt="Downloads and manually supplied scans reach document intake. The original is checked with SHA-256. Documents with a clear type and destination are filed with a trace. Unclear documents stay in the review queue."></a>
               <a class="compact" data-view="compact" href="diagrams/invoice-intake-compact.svg?v=15346e8854" aria-label="Enlarge Invoice intake diagram"><img src="diagrams/invoice-intake-compact.svg?v=15346e8854" width="286" height="430" alt="Downloads and manually supplied scans reach document intake. The original is checked with SHA-256. Documents with a clear type and destination are filed with a trace. Unclear documents stay in the review queue."></a>
             </div>
             <figcaption>The original file and its fingerprint remain available for visual review.
-              <span class="figure-links"><a data-view="wide" href="diagrams/invoice-intake-wide.svg?v=b037074dcc" aria-label="Full diagram for Invoice intake">Full diagram</a><a class="source" href="diagrams/invoice-intake.mmd?v=06aad6b20f" download="invoice-intake.mmd" aria-label="Mermaid source for Invoice intake">Mermaid source</a></span>
+              <span class="figure-links"><a data-view="wide" href="diagrams/invoice-intake-wide.svg?v=e20e8f743d" aria-label="Full diagram for Invoice intake">Full diagram</a><a class="source" href="diagrams/invoice-intake.mmd?v=e1e68a92e3" download="invoice-intake.mmd" aria-label="Mermaid source for Invoice intake">Mermaid source</a></span>
             </figcaption>
           </figure>
         </div>
@@ -202,23 +203,23 @@
         <h3 id="arch-email">Architecture</h3>
         <div class="panel" id="view-email">
           <h4>Calendar updates</h4><figure class="schematic" data-title="Calendar updates">
-            <div class="frame" style="--wide:35.40548rem; --compact:21.80871rem">
-              <a class="wide" data-view="wide" href="diagrams/email-wide.svg?v=f105188d5d" aria-label="Enlarge Calendar updates diagram"><img src="diagrams/email-wide.svg?v=f105188d5d" width="566" height="631" alt="Local extraction proposes a calendar change. Ambiguous evidence goes to human review. Invitation updates are matched by event ID and version. Current events are skipped. Valid changes are written and read back by ID."></a>
+            <div class="frame" style="--wide:67.25354rem; --compact:21.80871rem">
+              <a class="wide" data-view="wide" href="diagrams/email-wide.svg?v=8f265626e2" aria-label="Enlarge Calendar updates diagram"><img src="diagrams/email-wide.svg?v=8f265626e2" width="1076" height="201" alt="Local extraction proposes a calendar change. Ambiguous evidence goes to human review. Invitation updates are matched by event ID and version. Current events are skipped. Valid changes are written and read back by ID."></a>
               <a class="compact" data-view="compact" href="diagrams/email-compact.svg?v=077481e1d5" aria-label="Enlarge Calendar updates diagram"><img src="diagrams/email-compact.svg?v=077481e1d5" width="349" height="461" alt="Local extraction proposes a calendar change. Ambiguous evidence goes to human review. Invitation updates are matched by event ID and version. Current events are skipped. Valid changes are written and read back by ID."></a>
             </div>
             <figcaption>A changed invitation has to match the event before its new time can be written.
-              <span class="figure-links"><a data-view="wide" href="diagrams/email-wide.svg?v=f105188d5d" aria-label="Full diagram for Calendar updates">Full diagram</a><a class="source" href="diagrams/email.mmd?v=0c9d52465d" download="email.mmd" aria-label="Mermaid source for Calendar updates">Mermaid source</a></span>
+              <span class="figure-links"><a data-view="wide" href="diagrams/email-wide.svg?v=8f265626e2" aria-label="Full diagram for Calendar updates">Full diagram</a><a class="source" href="diagrams/email.mmd?v=1b08737d5a" download="email.mmd" aria-label="Mermaid source for Calendar updates">Mermaid source</a></span>
             </figcaption>
           </figure>
         </div>
         <div class="panel" id="view-application-replies">
           <h4>Application replies</h4><figure class="schematic" data-title="Application replies">
-            <div class="frame" style="--wide:30.13001rem; --compact:19.38169rem">
-              <a class="wide" data-view="wide" href="diagrams/application-replies-wide.svg?v=82d03faa39" aria-label="Enlarge Application replies diagram"><img src="diagrams/application-replies-wide.svg?v=82d03faa39" width="482" height="613" alt="A local model extracts a reply type and quote. The tracker checks the quote against the message and identifies the specific role. Clear decisions are journalled in SQLite. Conflicting evidence goes to review."></a>
+            <div class="frame" style="--wide:65.10424rem; --compact:19.38169rem">
+              <a class="wide" data-view="wide" href="diagrams/application-replies-wide.svg?v=b883259c14" aria-label="Enlarge Application replies diagram"><img src="diagrams/application-replies-wide.svg?v=b883259c14" width="1042" height="178" alt="A local model extracts a reply type and quote. The tracker checks the quote against the message and identifies the specific role. Clear decisions are journalled in SQLite. Conflicting evidence goes to review."></a>
               <a class="compact" data-view="compact" href="diagrams/application-replies-compact.svg?v=7ab424020d" aria-label="Enlarge Application replies diagram"><img src="diagrams/application-replies-compact.svg?v=7ab424020d" width="310" height="512" alt="A local model extracts a reply type and quote. The tracker checks the quote against the message and identifies the specific role. Clear decisions are journalled in SQLite. Conflicting evidence goes to review."></a>
             </div>
             <figcaption>The tracker checks the quote in the current message and matches it to one role.
-              <span class="figure-links"><a data-view="wide" href="diagrams/application-replies-wide.svg?v=82d03faa39" aria-label="Full diagram for Application replies">Full diagram</a><a class="source" href="diagrams/application-replies.mmd?v=87fac87e0c" download="application-replies.mmd" aria-label="Mermaid source for Application replies">Mermaid source</a></span>
+              <span class="figure-links"><a data-view="wide" href="diagrams/application-replies-wide.svg?v=b883259c14" aria-label="Full diagram for Application replies">Full diagram</a><a class="source" href="diagrams/application-replies.mmd?v=e02459bda6" download="application-replies.mmd" aria-label="Mermaid source for Application replies">Mermaid source</a></span>
             </figcaption>
           </figure>
         </div>

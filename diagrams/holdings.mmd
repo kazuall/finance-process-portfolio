@@ -17,18 +17,18 @@ config:
     htmlLabels: false
     useMaxWidth: false
     nodeSpacing: 21
-    rankSpacing: 30
+    rankSpacing: 22
     wrappingWidth: 240
     padding: 8
     diagramPadding: 5
     curve: basis
   themeCSS: 'text,tspan{font-family:system-ui,sans-serif!important;font-weight:400!important}.node rect.label-container{rx:3px;ry:3px}.node rect,.node polygon,.flowchart-link{stroke-width:.85px!important}.edgeLabel .labelBkg{fill:#0a0a0a!important;opacity:1!important}.edgeLabel text{fill:#bebebe!important}'
 ---
-flowchart TB
+flowchart LR
   accTitle: Holdings freshness pilot
   accDescr: A manual check reads Holdings status and source timestamps. A new incident produces one local report. Repeat observations are deduplicated. A healthy reading closes an open incident or leaves the log untouched.
-  api["Read local Holdings status and health"] --> times["Check source availability<br/>and balance / price timestamps"]
-  times --> prior["Read prior incident state"]
+  api["Read Holdings<br/>status and health"] --> times["Check availability<br/>and balance / price age"]
+  times --> prior["Read prior<br/>incident state"]
   prior --> state{"Source state?"}
   state -->|Healthy| ok["No report"]
   state -->|New incident| log["One report per<br/>source and episode"]

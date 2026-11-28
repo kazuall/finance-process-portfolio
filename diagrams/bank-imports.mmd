@@ -17,20 +17,20 @@ config:
     htmlLabels: false
     useMaxWidth: false
     nodeSpacing: 26
-    rankSpacing: 30
+    rankSpacing: 22
     wrappingWidth: 240
     padding: 8
     diagramPadding: 5
     curve: basis
   themeCSS: 'text,tspan{font-family:system-ui,sans-serif!important;font-weight:400!important}.node rect.label-container{rx:3px;ry:3px}.node rect,.node polygon,.flowchart-link{stroke-width:.85px!important}.edgeLabel .labelBkg{fill:#0a0a0a!important;opacity:1!important}.edgeLabel text{fill:#bebebe!important}'
 ---
-flowchart TB
+flowchart LR
   accTitle: Bank sync and reconciliation
   accDescr: Actual Budget reads two linked accounts through Enable Banking. I compare budget snapshots to check matched and new entries, then reconcile the booked balance separately from pending amounts.
-  start["Start bank sync in Actual"] --> feed["Read two linked accounts<br/>via Enable Banking"]
-  feed --> audit["Compare budget snapshots<br/>before and after sync"]
-  audit --> existing["Check existing records<br/>against bank references"]
-  audit --> added["Count new entries<br/>and check for duplicates"]
-  existing --> balance["Reconcile booked balance<br/>against the bank"]
+  start["Start sync<br/>in Actual"] --> feed["Enable Banking<br/>Two linked accounts"]
+  feed --> audit["Compare snapshots<br/>before / after sync"]
+  audit --> existing["Match existing<br/>bank references"]
+  audit --> added["Count new entries<br/>Check duplicates"]
+  existing --> balance["Reconcile booked<br/>balance with bank"]
   added --> balance
-  balance --> pending["Account separately<br/>for pending transactions"]
+  balance --> pending["Track pending<br/>items separately"]

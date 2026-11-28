@@ -17,20 +17,20 @@ config:
     htmlLabels: false
     useMaxWidth: false
     nodeSpacing: 26
-    rankSpacing: 30
+    rankSpacing: 22
     wrappingWidth: 240
     padding: 8
     diagramPadding: 5
     curve: basis
   themeCSS: 'text,tspan{font-family:system-ui,sans-serif!important;font-weight:400!important}.node rect.label-container{rx:3px;ry:3px}.node rect,.node polygon,.flowchart-link{stroke-width:.85px!important}.edgeLabel .labelBkg{fill:#0a0a0a!important;opacity:1!important}.edgeLabel text{fill:#bebebe!important}'
 ---
-flowchart TB
+flowchart LR
   accTitle: Invoice intake
   accDescr: Downloads and manually supplied scans reach document intake. The original is fingerprinted. Documents with a clear type and destination are filed with a trace. Unclear documents stay in the review queue.
-  downloads["Recognised invoice download"] --> verify["Check stability and duplicates"]
-  verify -->|Confirmed| drop["Administrative inbox"]
-  manual["Manually submitted scan"] --> drop
-  drop --> read["Read document and verify SHA-256"]
+  downloads["Downloaded<br/>invoice"] --> verify["Check stability<br/>and duplicates"]
+  verify -->|Confirmed| drop["Document<br/>inbox"]
+  manual["Manual scan"] --> drop
+  drop --> read["Read document<br/>Verify SHA-256"]
   read --> route{"Destination<br/>supported?"}
-  route -.->|Unclear| review["Hold for visual review"]
-  route -->|Clear| file["File and log source<br/>and destination"]
+  route -.->|Unclear| review["Hold for<br/>visual review"]
+  route -->|Clear| file["File and log<br/>both paths"]
